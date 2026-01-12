@@ -64,6 +64,41 @@ export default function IOSCLanding() {
     },
   ];
 
+  const headerOptions = [
+    "Welcome to the start of<br/>something *special.*",
+    "Build *experiences,* not apps.",
+    "Join a community of *passionate* builders.",
+    "For the love of the *craft.*",
+    "Create the *next big app.*",
+  ];
+
+  const selectedHeader = React.useMemo(() => {
+    return headerOptions[Math.floor(Math.random() * headerOptions.length)];
+  }, []);
+
+  const renderEmphasis = (text) => {
+    const segments = text.split("<br/>");
+    const nodes = [];
+
+    segments.forEach((seg, si) => {
+      const tokens = seg.split(/(\*[^*]+\*)/g);
+      tokens.forEach((tok, ti) => {
+        if (tok.startsWith("*") && tok.endsWith("*")) {
+          nodes.push(
+            <span className="gradient-text" key={`g-${si}-${ti}`}>
+              {tok.slice(1, -1)}
+            </span>
+          );
+        } else {
+          nodes.push(tok);
+        }
+      });
+      if (si < segments.length - 1) nodes.push(<br key={`br-${si}`} />);
+    });
+
+    return nodes;
+  };
+
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (!element) return;
@@ -273,6 +308,7 @@ export default function IOSCLanding() {
               src={logo_b}
               alt="iOSC logo black"
               className="h-[21px] object-contain"
+              onClick={() => scrollToSection("header")}
             />
           </div>
           <div className="flex gap-8 text-[12px]">
@@ -299,7 +335,7 @@ export default function IOSCLanding() {
       </nav>
 
       {/* header */}
-      <div className="relative overflow-hidden bg-black text-white">
+      <div id="header" className="relative overflow-hidden bg-black text-white">
         <div className="max-w-[980px] mx-auto px-6 pt-[140px] pb-[180px] min-h-[740px] text-center flex items-center">
           <div className="w-full opacity-0 animate-fade-in">
             <div className="mb-6">
@@ -311,9 +347,7 @@ export default function IOSCLanding() {
             </div>
 
             <h1 className="large-text mb-[24px] opacity-0 animate-fade-in-up delay-200">
-              Welcome to the start of <br />
-              something
-              <span className="gradient-text"> special.</span>
+              {renderEmphasis(selectedHeader)}
             </h1>
 
             <p className="subheadline text-[white] max-w-[600px] mx-auto mb-[40px] opacity-0 animate-fade-in-up delay-300">
