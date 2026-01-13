@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import logo_b from "./assets/iosc-final-logo-black.png";
-import logo_w from "./assets/iosc-final-logo-white.png";
+import logo_b from "./assets/iOSC Final Logo from Figma (1).svg";
+import logo_w from "./assets/iOSC Final Logo from Figma.svg";
 import swift from "./assets/swift_logo.png";
 import app_store from "./assets/app_store.png";
 import appleGradient from "./assets/Rectangle 9.png";
@@ -67,10 +67,11 @@ export default function IOSCLanding() {
 
   const headerOptions = [
     "Welcome to the start of<br/>something *special.*",
-    "Build *experiences,* not apps.",
+    "Build *experiences* not apps.",
     "Join a community of *passionate* builders.",
     "For the love of the *craft.*",
     "Create the *next big app.*",
+    "The future is *yours* to create.",
   ];
 
   const selectedHeader = React.useMemo(() => {
@@ -308,11 +309,11 @@ export default function IOSCLanding() {
             <img
               src={logo_b}
               alt="iOSC logo black"
-              className="h-[21px] object-contain"
+              className="h-[30px] object-contain"
               onClick={() => scrollToSection("header")}
             />
           </div>
-          <div className="flex gap-8 text-[12px]">
+          <div className="flex gap-8 text-[15px]">
             <button
               onClick={() => scrollToSection("about")}
               className="apple-link"
@@ -337,13 +338,13 @@ export default function IOSCLanding() {
 
       {/* header */}
       <div id="header" className="relative overflow-hidden bg-black text-white">
-        <div className="max-w-[980px] mx-auto px-6 pt-[140px] pb-[180px] min-h-[740px] text-center flex items-center">
+        <div className="max-w-[980px] mx-auto px-6 pt-[70px] pb-[100px] min-h-[740px] text-center flex items-center">
           <div className="w-full opacity-0 animate-fade-in">
             <div className="mb-6">
               <img
                 src={logo_w}
                 alt="iOSC logo"
-                className="h-[30px] object-contain mx-auto opacity-0 animate-fade-in-up delay-100"
+                className="h-[225px] object-contain mx-auto opacity-0 animate-fade-in-up delay-100"
               />
             </div>
 
@@ -514,10 +515,7 @@ export default function IOSCLanding() {
               <div className="button-vec-bg" aria-hidden="true" />
               <button
                 onClick={() =>
-                  window.open(
-                    "https://forms.gle/your-application-form",
-                    "_blank"
-                  )
+                  window.open("https://forms.gle/4oxNupZL9mjX9EXe8", "_blank")
                 }
                 className="apple-button relative z-10 text-white px-[28px] py-[16px] text-[17px] font-normal"
               >
@@ -533,7 +531,7 @@ export default function IOSCLanding() {
         <div className="max-w-[980px] mx-auto px-6 py-[21px]">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-[12px] text-[#6e6e73]">
-              Copyright © 2026 iOSC. University of Southern California.
+              Copyright © 2026 iOSC.
             </div>
             <div className="flex gap-6 text-[12px]">
               <a href="#" className="apple-link"></a>
