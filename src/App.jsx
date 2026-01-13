@@ -3,6 +3,7 @@ import logo_b from "./assets/iosc-final-logo-black.png";
 import logo_w from "./assets/iosc-final-logo-white.png";
 import swift from "./assets/swift_logo.png";
 import app_store from "./assets/app_store.png";
+import appleGradient from "./assets/Rectangle 9.png";
 
 export default function IOSCLanding() {
   const [scrollY, setScrollY] = useState(0);
