@@ -463,7 +463,7 @@ export function IoscApp() {
 
   return (
     <div
-      className="fixed inset-0"
+      className="fixed inset-0 pt-16 md:pt-24"
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
     >
@@ -529,7 +529,7 @@ export function IoscApp() {
                 className="btn-tinted"
                 onClick={() => go(2)}
               >
-                Meet the Team.
+                Meet the team.
               </button>
             </div>
           </div>
@@ -684,7 +684,7 @@ export function IoscApp() {
         aria-hidden={cur !== 2}
       >
         <div
-          className="mx-auto max-w-6xl px-8 pt-12 pb-[100px] h-full overflow-auto"
+          className="mx-auto max-w-6xl px-8 pt-16 pb-[100px] h-full overflow-auto"
           style={{ minHeight: "100dvh" }}
         >
           <div className="mb-10">
