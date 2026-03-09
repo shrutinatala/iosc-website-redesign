@@ -1,7 +1,9 @@
 "use client";
 
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
+import appStoreIcon from "../../archive/src/assets/app_store.png";
+import swiftLogoIcon from "../../archive/src/assets/swift_logo.png";
 
 const PAGES = ["home", "about", "team"] as const;
 
@@ -99,11 +101,20 @@ const ARCHIVE_EVENTS: Array<{
   },
 ];
 
-const FEATURES = [
+interface Feature {
+  title: string;
+  desc: string;
+  emoji?: string;
+  icon?: StaticImageData;
+  iconAlt?: string;
+}
+
+const FEATURES: Feature[] = [
   {
-    emoji: "📱",
     title: "General Meetings",
     desc: "Learn Swift from 0 to 1 together.",
+    icon: swiftLogoIcon,
+    iconAlt: "Swift logo",
   },
   {
     emoji: "🍎",
@@ -116,9 +127,10 @@ const FEATURES = [
     desc: "Hear from top app builders and Apple engineers.",
   },
   {
-    emoji: "🚀",
     title: "Launchpad",
     desc: "Ship your app and share it with users.",
+    icon: appStoreIcon,
+    iconAlt: "App Store logo",
   },
 ];
 
@@ -646,8 +658,18 @@ export function IoscApp() {
                   key={f.title}
                   className="g-card p-4 flex flex-col items-center text-center gap-3 group cursor-default"
                 >
-                  <div className="w-10 h-10 rounded-[var(--r-sm)] flex items-center justify-center text-xl flex-shrink-0 transition-transform duration-200 group-hover:-translate-y-0.5 bg-theme-glass-2 border border-theme-1 border-solid">
-                    {f.emoji}
+                  <div className="w-10 h-10 rounded-[var(--r-sm)] flex items-center justify-center text-xl flex-shrink-0 transition-transform duration-200 group-hover:-translate-y-0.5">
+                    {f.icon ? (
+                      <Image
+                        src={f.icon}
+                        alt={f.iconAlt ?? f.title}
+                        width={32}
+                        height={32}
+                        className="w-8 h-8 object-contain"
+                      />
+                    ) : (
+                      f.emoji
+                    )}
                   </div>
                   <div className="space-y-1">
                     <p className="font-medium text-theme-0 text-sm">

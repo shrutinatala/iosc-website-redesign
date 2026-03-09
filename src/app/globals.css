@@ -204,8 +204,8 @@ body {
 }
 
 .nav-pill {
-  --nav-pad-y: 12px;
-  --nav-pad-x: 16px;
+  --nav-pad-y: 14px;
+  --nav-pad-x: 20px;
   position: fixed;
   bottom: 24px;
   left: 50%;
@@ -235,8 +235,8 @@ body {
 }
 
 .nav-btn {
-  padding: 10px 20px;
-  font-size: 14px;
+  padding: 11px 22px;
+  font-size: 15px;
   font-weight: 500;
   font-family: var(--sans);
   color: var(--text-1);
@@ -265,12 +265,14 @@ body {
 
 .nav-indicator {
   position: absolute;
-  top: calc(var(--nav-pad-y) - 5px);
-  bottom: calc(var(--nav-pad-y) - 5px);
+  top: calc(var(--nav-pad-y) - 3px);
+  bottom: calc(var(--nav-pad-y) - 3px);
   /* Fully round slider */
   border-radius: 999px;
-  background: var(--glass-2);
-  box-shadow: var(--shadow-inner);
+  background: var(--glass-3);
+  box-shadow:
+    var(--shadow-inner),
+    0 0 0 1px rgba(255, 255, 255, 0.06);
   transition:
     left 0.25s cubic-bezier(0.4, 0, 0.2, 1),
     width 0.25s cubic-bezier(0.4, 0, 0.2, 1),
