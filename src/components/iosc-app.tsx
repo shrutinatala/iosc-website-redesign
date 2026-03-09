@@ -213,6 +213,7 @@ const FLIP_DURATION_MS = 400;
 function EventCarousel({ isActive }: { isActive: boolean }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [flipPhase, setFlipPhase] = useState<"idle" | "out" | "in">("idle");
+  const [direction, setDirection] = useState<"next" | "prev">("next");
   const nextIndexRef = useRef(0);
 
   const total = ARCHIVE_EVENTS.length;
@@ -221,14 +222,15 @@ function EventCarousel({ isActive }: { isActive: boolean }) {
   useEffect(() => {
     if (!isActive || flipPhase !== "idle") return;
     const t = setInterval(() => {
-      goToIndex((currentIndex + 1) % total);
+      goToIndex((currentIndex + 1) % total, "next");
     }, AUTO_ADVANCE_MS);
     return () => clearInterval(t);
   }, [isActive, currentIndex, total, flipPhase]);
 
-  function goToIndex(next: number) {
+  function goToIndex(next: number, dir: "next" | "prev") {
     if (flipPhase !== "idle") return;
     nextIndexRef.current = next;
+    setDirection(dir);
     setFlipPhase("out");
     setTimeout(() => {
       setCurrentIndex(nextIndexRef.current);
@@ -238,11 +240,11 @@ function EventCarousel({ isActive }: { isActive: boolean }) {
   }
 
   function goNext() {
-    goToIndex((currentIndex + 1) % total);
+    goToIndex((currentIndex + 1) % total, "next");
   }
 
   function goPrev() {
-    goToIndex((currentIndex - 1 + total) % total);
+    goToIndex((currentIndex - 1 + total) % total, "prev");
   }
 
   return (
@@ -252,7 +254,17 @@ function EventCarousel({ isActive }: { isActive: boolean }) {
         style={{ height: 615 }}
       >
         <div
-          className={`event-carousel-card flex flex-col h-full ${flipPhase === "out" ? "flip-out" : flipPhase === "in" ? "flip-in" : ""}`}
+          className={`event-carousel-card flex flex-col h-full ${
+            flipPhase === "out"
+              ? direction === "next"
+                ? "flip-out-next"
+                : "flip-out-prev"
+              : flipPhase === "in"
+                ? direction === "next"
+                  ? "flip-in-next"
+                  : "flip-in-prev"
+                : ""
+          }`}
         >
           <div className="relative w-full flex-1">
             {event.media.type === "image" ? (
@@ -287,7 +299,7 @@ function EventCarousel({ isActive }: { isActive: boolean }) {
           type="button"
           onClick={goPrev}
           aria-label="Previous event"
-          className="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-[var(--r-lg)] text-theme-1 hover:text-theme-0 hover:bg-theme-glass-1 transition-colors z-10"
+          className="absolute left-3 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-[rgba(0,0,0,0.45)] text-theme-0 shadow-md hover:bg-[rgba(0,0,0,0.7)] hover:-translate-x-0.5 transition-transform transition-colors z-10 backdrop-blur-md"
         >
           <ChevronLeftIcon />
         </button>
@@ -295,7 +307,7 @@ function EventCarousel({ isActive }: { isActive: boolean }) {
           type="button"
           onClick={goNext}
           aria-label="Next event"
-          className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-[var(--r-lg)] text-theme-1 hover:text-theme-0 hover:bg-theme-glass-1 transition-colors z-10"
+          className="absolute right-3 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-[rgba(0,0,0,0.45)] text-theme-0 shadow-md hover:bg-[rgba(0,0,0,0.7)] hover:translate-x-0.5 transition-transform transition-colors z-10 backdrop-blur-md"
         >
           <ChevronRightIcon />
         </button>
@@ -497,22 +509,6 @@ export function IoscApp() {
               SwiftUI, and ship real apps. Whether you&apos;re just starting or
               already shipping, you belong here.
             </p>
-            <div className="flex flex-wrap gap-3">
-              <button
-                type="button"
-                className="btn-filled"
-                onClick={() => go(1)}
-              >
-                What&apos;s iOSC?
-              </button>
-              <button
-                type="button"
-                className="btn-tinted"
-                onClick={() => go(2)}
-              >
-                Meet the team.
-              </button>
-            </div>
           </div>
           <div
             className="col-right animate-up"
