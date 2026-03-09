@@ -1,0 +1,32 @@
+[
+  {
+    "date": { "month": "Mar", "day": "11" },
+    "tag": "General Meeting",
+    "title": "Navigation",
+    "meta": "8:00 PM"
+  },
+  {
+    "date": { "month": "Mar", "day": "25" },
+    "tag": "General Meeting",
+    "title": "Payments",
+    "meta": "8:00 PM"
+  },
+  {
+    "date": { "month": "Mar", "day": "25" },
+    "tag": "Workshop",
+    "title": "Playgrounds (Co-working Session)",
+    "meta": "7:00 PM · TBD"
+  },
+  {
+    "date": { "month": "Apr", "day": "1" },
+    "tag": "General Meeting",
+    "title": "UI/UX and App Design",
+    "meta": "8:00 PM"
+  },
+  {
+    "date": { "month": "Apr", "day": "21" },
+    "tag": "Special Event",
+    "title": "Launchpad",
+    "meta": "8:00 PM · TBD"
+  }
+]

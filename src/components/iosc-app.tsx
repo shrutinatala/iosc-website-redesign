@@ -4,6 +4,7 @@ import Image, { type StaticImageData } from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import appStoreIcon from "../../archive/src/assets/app_store.png";
 import swiftLogoIcon from "../../archive/src/assets/swift_logo.png";
+import upcomingEvents from "../data/upcoming-events.json";
 
 const PAGES = ["home", "about", "team"] as const;
 
@@ -38,38 +39,7 @@ function parseHeaderText(text: string) {
   return parts;
 }
 
-const UPCOMING_EVENTS = [
-  {
-    date: { month: "Mar", day: "11" },
-    tag: "General Meeting",
-    title: "Navigation",
-    meta: "8:00 PM · DMC 100",
-  },
-  {
-    date: { month: "Mar", day: "25" },
-    tag: "General Meeting",
-    title: "Payments",
-    meta: "8:00 PM · DMC 100",
-  },
-  {
-    date: { month: "Apr", day: "1" },
-    tag: "General Meeting",
-    title: "UI/UX and App Design",
-    meta: "8:00 PM · DMC 100",
-  },
-  {
-    date: { month: "Mar", day: "25" },
-    tag: "Workshop",
-    title: "Playgrounds (Co-working Session)",
-    meta: "7:00 PM · TBD",
-  },
-  {
-    date: { month: "Apr", day: "21" },
-    tag: "Special Event",
-    title: "Launchpad",
-    meta: "8:00 PM · TBD",
-  },
-];
+const UPCOMING_EVENTS = upcomingEvents;
 
 /** Event archive carousel — only the 3 items from event assets */
 const ARCHIVE_EVENTS: Array<{
@@ -89,7 +59,7 @@ const ARCHIVE_EVENTS: Array<{
     title: "Swift Student Challenge Hack Night",
     date: "February 27, 2026",
     description:
-      "A night of building and learning: members worked on Swift Student Challenge submissions with pizza and good vibes.",
+      "Members spent a night working on their Swift Student Challenge submissions with pizza and good vibes.",
     media: { type: "image", src: "/events/swift-challenge-hack-night.jpeg" },
   },
   {
@@ -276,15 +246,15 @@ function EventCarousel({ isActive }: { isActive: boolean }) {
   }
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="w-full">
       <div
         className="relative w-full rounded-[var(--r-md)] overflow-hidden border border-theme-1 border-solid bg-theme-glass-1"
-        style={{ height: 580 }}
+        style={{ height: 615 }}
       >
         <div
-          className={`event-carousel-card absolute inset-0 flex flex-col ${flipPhase === "out" ? "flip-out" : flipPhase === "in" ? "flip-in" : ""}`}
+          className={`event-carousel-card flex flex-col h-full ${flipPhase === "out" ? "flip-out" : flipPhase === "in" ? "flip-in" : ""}`}
         >
-          <div className="relative w-full h-[415px] flex-shrink-0">
+          <div className="relative w-full flex-1">
             {event.media.type === "image" ? (
               <img
                 src={event.media.src}
@@ -312,13 +282,12 @@ function EventCarousel({ isActive }: { isActive: boolean }) {
             </p>
           </div>
         </div>
-      </div>
-      <div className="flex items-center justify-center gap-4 mt-4">
+
         <button
           type="button"
           onClick={goPrev}
           aria-label="Previous event"
-          className="p-2 rounded-[var(--r-lg)] text-theme-1 hover:text-theme-0 hover:bg-theme-glass-1 transition-colors"
+          className="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-[var(--r-lg)] text-theme-1 hover:text-theme-0 hover:bg-theme-glass-1 transition-colors z-10"
         >
           <ChevronLeftIcon />
         </button>
@@ -326,7 +295,7 @@ function EventCarousel({ isActive }: { isActive: boolean }) {
           type="button"
           onClick={goNext}
           aria-label="Next event"
-          className="p-2 rounded-[var(--r-lg)] text-theme-1 hover:text-theme-0 hover:bg-theme-glass-1 transition-colors"
+          className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-[var(--r-lg)] text-theme-1 hover:text-theme-0 hover:bg-theme-glass-1 transition-colors z-10"
         >
           <ChevronRightIcon />
         </button>
@@ -475,7 +444,7 @@ export function IoscApp() {
 
   return (
     <div
-      className="fixed inset-0 pt-16 md:pt-24"
+      className="relative min-h-screen pt-16 md:pt-24"
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
     >
@@ -555,7 +524,7 @@ export function IoscApp() {
             >
               Upcoming events
             </p>
-            <div className="flex flex-col gap-4 pb-8 no-hover">
+            <div className="flex flex-col gap-4 pb-8 no-hover w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
               {UPCOMING_EVENTS.map((ev, i) => (
                 <div
                   key={ev.title}
@@ -706,7 +675,7 @@ export function IoscApp() {
         aria-hidden={cur !== 2}
       >
         <div
-          className="mx-auto max-w-6xl px-8 pt-16 pb-[100px] h-full overflow-auto"
+          className="mx-auto max-w-6xl px-8 pt-16 pb-[100px]"
           style={{ minHeight: "100dvh" }}
         >
           <div className="mb-10">

@@ -4,10 +4,11 @@
   --sans:
     -apple-system, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial,
     sans-serif;
-  --r-sm: 10px;
-  --r-md: 16px;
-  --r-lg: 20px;
-  --r-xl: 28px;
+  /* Corner radii tuned to feel closer to Apple's continuous corners */
+  --r-sm: 12px;
+  --r-md: 20px;
+  --r-lg: 26px;
+  --r-xl: 34px;
 }
 
 /* Dark theme (default; also set when no preference or data-theme="dark") */
@@ -121,6 +122,9 @@ body {
   position: absolute;
   inset: 0;
   z-index: 2;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   transition:
     opacity 0.36s cubic-bezier(0.4, 0, 0.2, 1),
     transform 0.36s cubic-bezier(0.4, 0, 0.2, 1);
@@ -137,7 +141,8 @@ body {
   backdrop-filter: blur(28px) saturate(1.6);
   -webkit-backdrop-filter: blur(28px) saturate(1.6);
   border: 0.25px solid var(--border-1);
-  border-radius: var(--r-md);
+  /* Approximate continuous corners with different horizontal/vertical radii */
+  border-radius: var(--r-md) / calc(var(--r-md) * 0.75);
   box-shadow: var(--shadow-card), var(--shadow-inner);
   transition:
     transform 0.22s cubic-bezier(0.34, 1.4, 0.64, 1),
@@ -164,7 +169,7 @@ body {
   -webkit-backdrop-filter: blur(20px);
   color: var(--text-0);
   border: 0.5px solid var(--border-2);
-  border-radius: var(--r-xl);
+  border-radius: var(--r-xl) / calc(var(--r-xl) * 0.8);
   padding: 11px 22px;
   font-size: 14px;
   font-weight: 600;
@@ -187,7 +192,7 @@ body {
   -webkit-backdrop-filter: blur(20px);
   color: var(--text-1);
   border: 0.5px solid var(--border-0);
-  border-radius: var(--r-xl);
+  border-radius: var(--r-xl) / calc(var(--r-xl) * 0.8);
   padding: 11px 22px;
   font-size: 14px;
   font-weight: 500;
@@ -204,8 +209,8 @@ body {
 }
 
 .nav-pill {
-  --nav-pad-y: 14px;
-  --nav-pad-x: 20px;
+  --nav-pad-y: 10px;
+  --nav-pad-x: 14px;
   position: fixed;
   bottom: 24px;
   left: 50%;
@@ -286,7 +291,7 @@ body {
   padding: 8px 12px;
   background: var(--glass-0);
   border: 0.5px solid var(--border-0);
-  border-radius: var(--r-lg);
+  border-radius: var(--r-lg) / calc(var(--r-lg) * 0.8);
   color: var(--text-1);
   cursor: pointer;
   transition:
@@ -315,7 +320,6 @@ body {
   max-width: 72rem;
   margin: 0 auto;
   padding: 72px 2rem 96px;
-  height: 100%;
   box-sizing: border-box;
 }
 
@@ -327,35 +331,11 @@ body {
 }
 
 .page-scroll-right .col-left {
-  position: sticky;
-  top: 0;
+  position: relative;
 }
 
 .page-scroll-right .col-right {
-  overflow-y: auto;
-  overflow-x: hidden;
-  max-height: calc(100dvh - 52px - 96px);
-  padding-right: 4px;
-}
-
-.page-scroll-right .col-right::-webkit-scrollbar {
-  width: 6px;
-}
-
-.page-scroll-right .col-right::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.page-scroll-right .col-right::-webkit-scrollbar-thumb {
-  background: var(--border-1);
-  border-radius: var(--r-md);
-}
-
-@media (max-width: 1023px) {
-  .page-scroll-right .col-right {
-    max-height: none;
-    overflow: visible;
-  }
+  overflow: visible;
 }
 
 /* About page grid */
@@ -367,7 +347,6 @@ body {
   max-width: 72rem;
   margin: 0 auto;
   padding: 68px 2rem 100px;
-  height: 100%;
   box-sizing: border-box;
 }
 
@@ -378,8 +357,7 @@ body {
 }
 
 .page-about-grid .col-left {
-  position: sticky;
-  top: 0;
+  position: relative;
 }
 
 .page-about-grid .col-right {
