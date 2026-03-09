@@ -574,7 +574,7 @@ export function IoscApp() {
               className="text-[11px] uppercase tracking-[0.12em] text-theme-2 mb-2"
               style={{ fontFamily: "var(--sans)" }}
             >
-              Est. 2025
+              Est. 2026
             </p>
             <h2
               className="text-4xl font-bold tracking-tight text-theme-0 mb-6 leading-tight"
@@ -611,9 +611,9 @@ export function IoscApp() {
                 style={{ background: "var(--border-0)" }}
               />
               <div className="text-center flex-1">
-                <p className="text-2xl font-bold text-theme-0">1</p>
+                <p className="text-2xl font-bold text-theme-0">3</p>
                 <p className="text-[11px] text-theme-2 uppercase tracking-wider">
-                  Years
+                  Months
                 </p>
               </div>
             </div>
