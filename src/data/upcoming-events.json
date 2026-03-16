@@ -1,11 +1,5 @@
 [
   {
-    "date": { "month": "Mar", "day": "11" },
-    "tag": "General Meeting",
-    "title": "Navigation",
-    "meta": "8:00 PM"
-  },
-  {
     "date": { "month": "Mar", "day": "25" },
     "tag": "General Meeting",
     "title": "Payments",
