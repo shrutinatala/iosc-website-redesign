@@ -41,6 +41,31 @@ function parseHeaderText(text: string) {
 
 const UPCOMING_EVENTS = upcomingEvents;
 
+function parseUpcomingEventDate(ev: {
+  date: { month: string; day: string | number };
+}): Date | null {
+  const monthMap: Record<string, number> = {
+    Jan: 0,
+    Feb: 1,
+    Mar: 2,
+    Apr: 3,
+    May: 4,
+    Jun: 5,
+    Jul: 6,
+    Aug: 7,
+    Sep: 8,
+    Oct: 9,
+    Nov: 10,
+    Dec: 11,
+  };
+  const monthKey = ev.date.month as keyof typeof monthMap;
+  const monthIndex = monthMap[monthKey];
+  const dayNum = typeof ev.date.day === "string" ? parseInt(ev.date.day, 10) : ev.date.day;
+  if (Number.isNaN(dayNum) || monthIndex === undefined) return null;
+  const now = new Date();
+  return new Date(now.getFullYear(), monthIndex, dayNum);
+}
+
 /** Event archive carousel — only the 3 items from event assets */
 const ARCHIVE_EVENTS: Array<{
   title: string;
@@ -521,7 +546,13 @@ export function IoscApp() {
               Upcoming events
             </p>
             <div className="flex flex-col gap-4 pb-8 no-hover w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
-              {UPCOMING_EVENTS.map((ev, i) => (
+              {UPCOMING_EVENTS.filter((ev) => {
+                const d = parseUpcomingEventDate(ev as any);
+                if (!d) return true;
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                return d >= today;
+              }).map((ev, i) => (
                 <div
                   key={ev.title}
                   className="g-card flex items-center gap-4 p-4 cursor-default"
