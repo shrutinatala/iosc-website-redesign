@@ -149,7 +149,7 @@ const TEAM = [
   {
     name: "Marina Lee",
     role: "Vice President",
-    tag: "iOS Developer",
+    tag: "Swift Developer",
     image: "/team/marina.jpg",
     linkedin: "https://www.linkedin.com/in/marinahylee",
   },
@@ -177,14 +177,14 @@ const TEAM = [
   {
     name: "Pan",
     role: "Industry Relations",
-    tag: "iOS Developer",
+    tag: "Swift Developer",
     image: "/team/pan.png",
     linkedin: "",
   },
   {
     name: "Jacob",
     role: "Programming",
-    tag: "iOS Developer",
+    tag: "Swift Developer",
     image: "/team/jacob.png",
     linkedin: "",
   },
