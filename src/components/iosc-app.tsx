@@ -155,7 +155,7 @@ const TEAM = [
   },
   {
     name: "Shruti Natala",
-    role: "Community",
+    role: "VP, Community",
     tag: "Developer",
     image: "/team/shruti.jpeg",
     linkedin: "https://www.linkedin.com/in/shruti-natala",
@@ -175,15 +175,15 @@ const TEAM = [
     linkedin: "https://www.linkedin.com/in/rehaananjaria/",
   },
   {
-    name: "Pan",
-    role: "Industry Relations",
+    name: "Pan Pitpreecha",
+    role: "VP, Industry Relations",
     tag: "Swift Developer",
     image: "/team/pan.png",
     linkedin: "",
   },
   {
-    name: "Jacob",
-    role: "Programming",
+    name: "Jacob Scheff",
+    role: "VP, Programming",
     tag: "Swift Developer",
     image: "/team/jacob.png",
     linkedin: "",
