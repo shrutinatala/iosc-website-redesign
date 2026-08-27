@@ -401,11 +401,10 @@ export default function IOSCLanding() {
                 className="h-[56px] w-[56px] mt-[20px] mb-[12px] object-contain mx-auto"
               />
               <h3 className="text-[24px] font-semibold mb-[12px] text-[#1d1d1f]">
-                Learn
+                Community
               </h3>
               <p className="body-text text-[#1d1d1f]">
-                Learn Swift and SwiftUI with access to powerful developer
-                resources.
+                Work with fellow Swift developers and build community.
               </p>
             </div>
 

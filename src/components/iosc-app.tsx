@@ -116,7 +116,7 @@ interface Feature {
 const FEATURES: Feature[] = [
   {
     title: "General Meetings",
-    desc: "Learn Swift from 0 to 1 together.",
+    desc: "Work with fellow Swift devs and build community!",
     icon: swiftLogoIcon,
     iconAlt: "Swift logo",
   },
@@ -553,8 +553,8 @@ export function IoscApp() {
               className="text-[15.5px] font-normal text-theme-1 leading-[1.72] max-w-md mb-8"
               style={{ fontFamily: "var(--sans)" }}
             >
-              We bring together students who want to learn Swift, build with
-              SwiftUI, and ship real apps. Whether you&apos;re just starting or
+              We bring together students who are excited about Apple, build with
+              SwiftUI, and ship real apps. Whether you&apos;re getting starting or
               already shipping, you belong here.
             </p>
             <div className="flex flex-wrap gap-3">
@@ -662,7 +662,7 @@ export function IoscApp() {
               className="text-[15px] font-normal text-theme-1 leading-relaxed mb-8"
               style={{ fontFamily: "var(--sans)" }}
             >
-              iOSC is USC&apos;s home for Apple platforms. Learn Swift, explore
+              iOSC is USC&apos;s home for Apple platforms. Build community, explore
               special topics, meet builders, and ship apps that real people use.
             </p>
             <div className="flex items-center justify-between py-4 border-t border-b gap-6 border-theme-0">
