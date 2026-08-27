@@ -1,26 +1,44 @@
 [
   {
-    "date": { "month": "Mar", "day": "25" },
-    "tag": "General Meeting",
-    "title": "Payments",
-    "meta": "8:00 PM"
+    "date": { "month": "Aug", "day": "26" },
+    "tag": "Recruiting",
+    "title": "Applications Open",
+    "meta": "Apply now"
   },
   {
-    "date": { "month": "Mar", "day": "25" },
-    "tag": "Workshop",
-    "title": "Playgrounds (Co-working Session)",
-    "meta": "7:00 PM · TBD"
-  },
-  {
-    "date": { "month": "Apr", "day": "1" },
-    "tag": "General Meeting",
-    "title": "UI/UX and App Design",
-    "meta": "8:00 PM"
-  },
-  {
-    "date": { "month": "Apr", "day": "21" },
+    "date": { "month": "Aug", "day": "27" },
     "tag": "Special Event",
-    "title": "Launchpad",
-    "meta": "8:00 PM · TBD"
+    "title": "Involvement Fair",
+    "meta": "Come say hi"
+  },
+  {
+    "date": { "month": "Sep", "day": "1" },
+    "tag": "Info Session",
+    "title": "Info Session",
+    "meta": "Learn about iOSC"
+  },
+  {
+    "date": { "month": "Sep", "day": "4" },
+    "tag": "Recruiting",
+    "title": "Application Deadline",
+    "meta": "11:59 PM PST"
+  },
+  {
+    "date": { "month": "Sep", "day": "6–7" },
+    "tag": "Recruiting",
+    "title": "Interviews",
+    "meta": "By invitation"
+  },
+  {
+    "date": { "month": "Sep", "day": "8" },
+    "tag": "Recruiting",
+    "title": "Decisions",
+    "meta": "Results released"
+  },
+  {
+    "date": { "month": "Sep", "day": "9" },
+    "tag": "General Meeting",
+    "title": "First GM +  Event",
+    "meta": "8:00 PM"
   }
 ]

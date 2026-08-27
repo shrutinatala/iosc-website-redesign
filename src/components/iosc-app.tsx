@@ -60,11 +60,18 @@ function parseUpcomingEventDate(ev: {
   };
   const monthKey = ev.date.month as keyof typeof monthMap;
   const monthIndex = monthMap[monthKey];
-  const dayNum = typeof ev.date.day === "string" ? parseInt(ev.date.day, 10) : ev.date.day;
+  // Use the last day in ranges like "6–7" so multi-day events stay visible
+  const dayRaw = String(ev.date.day);
+  const dayParts = dayRaw.match(/\d+/g);
+  const dayNum = dayParts ? parseInt(dayParts[dayParts.length - 1], 10) : NaN;
   if (Number.isNaN(dayNum) || monthIndex === undefined) return null;
   const now = new Date();
   return new Date(now.getFullYear(), monthIndex, dayNum);
 }
+
+const APPLY_FORM_URL =
+  "https://docs.google.com/forms/d/e/1FAIpQLSfvNZ2VFtY7UvD0Ky6T_3M4VkdlSsT9f9Th54a2ncOuGXaeeg/viewform";
+
 
 /** Event archive carousel — only the 3 items from event assets */
 const ARCHIVE_EVENTS: Array<{
@@ -534,6 +541,16 @@ export function IoscApp() {
               SwiftUI, and ship real apps. Whether you&apos;re just starting or
               already shipping, you belong here.
             </p>
+            <div className="flex flex-wrap gap-3">
+              <a
+                href={APPLY_FORM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-filled inline-flex items-center no-underline"
+              >
+                Apply now
+              </a>
+            </div>
           </div>
           <div
             className="col-right animate-up"
@@ -569,7 +586,11 @@ export function IoscApp() {
                     <span className="text-[10px] uppercase text-theme-2 leading-tight">
                       {ev.date.month}
                     </span>
-                    <span className="text-lg font-semibold text-theme-0 leading-tight">
+                    <span
+                      className={`font-semibold text-theme-0 leading-tight ${
+                        String(ev.date.day).length > 2 ? "text-sm" : "text-lg"
+                      }`}
+                    >
                       {ev.date.day}
                     </span>
                   </div>
