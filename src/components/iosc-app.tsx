@@ -72,6 +72,8 @@ function parseUpcomingEventDate(ev: {
 const APPLY_FORM_URL =
   "https://docs.google.com/forms/d/e/1FAIpQLSfvNZ2VFtY7UvD0Ky6T_3M4VkdlSsT9f9Th54a2ncOuGXaeeg/viewform";
 
+const INTEREST_FORM_URL =
+  "https://docs.google.com/forms/d/e/1FAIpQLSfXNHotRVNNiF3aEfts94_OyiccqDDo-Km74aKVdJa--GF0hw/viewform";
 
 /** Event archive carousel — only the 3 items from event assets */
 const ARCHIVE_EVENTS: Array<{
@@ -549,6 +551,14 @@ export function IoscApp() {
                 className="btn-filled inline-flex items-center no-underline"
               >
                 Apply now
+              </a>
+              <a
+                href={INTEREST_FORM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-tinted inline-flex items-center no-underline"
+              >
+                Interested?
               </a>
             </div>
           </div>
