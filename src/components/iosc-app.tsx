@@ -141,14 +141,14 @@ const FEATURES: Feature[] = [
 const TEAM = [
   {
     name: "Om Chachad",
-    role: "President",
+    role: "Co-President",
     tag: "Swift Developer",
     image: "/team/om.png",
     linkedin: "https://www.linkedin.com/in/omchachad/",
   },
   {
     name: "Marina Lee",
-    role: "Vice President",
+    role: "Co-President",
     tag: "Swift Developer",
     image: "/team/marina.jpg",
     linkedin: "https://www.linkedin.com/in/marinahylee",
@@ -162,7 +162,7 @@ const TEAM = [
   },
   {
     name: "Laura Jun",
-    role: "VP, Operations",
+    role: "VP, RSO Management",
     tag: "Creator",
     image: "/team/laura.png",
     linkedin: "https://www.linkedin.com/in/laura-jun/",
