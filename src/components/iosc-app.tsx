@@ -545,20 +545,20 @@ export function IoscApp() {
             </p>
             <div className="flex flex-wrap gap-3">
               <a
+                href={INTEREST_FORM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-filled inline-flex items-center no-underline"
+              >
+                Interested?
+              </a>
+              <a
                 href={APPLY_FORM_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-filled inline-flex items-center no-underline"
               >
                 Apply now
-              </a>
-              <a
-                href={INTEREST_FORM_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-tinted inline-flex items-center no-underline"
-              >
-                Interested?
               </a>
             </div>
           </div>
