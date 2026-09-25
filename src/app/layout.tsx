@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import { SiteShell } from "@/components/site-shell";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "iOSC — iOS Development Club",
-  description: "iOSC — iOS Development Club. Est. 2020. We build for Apple's world.",
+  title: "iOSC — USC's Apple Platforms development club",
+  description:
+    "iOSC is USC's Apple Platforms development club. Meet the team, see past events, and schedule a coffee chat.",
 };
 
 export default function RootLayout({
@@ -21,7 +23,9 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="antialiased">{children}</body>
+      <body>
+        <SiteShell>{children}</SiteShell>
+      </body>
     </html>
   );
 }
