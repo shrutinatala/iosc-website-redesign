@@ -1,8 +1,9 @@
 import { clubEvents, galleryEvents, type GalleryMedia } from "./site";
 
-export type DetailMedia =
+export type DetailMedia = (
   | { type: "image" | "video"; src: string; label: string; caption?: string }
-  | { type: "placeholder"; label: string; caption?: string };
+  | { type: "placeholder"; label: string; caption?: string }
+) & { stock?: boolean; credit?: { label: string; url: string } };
 
 export type ShowcaseItem = {
   id: string;
@@ -72,6 +73,15 @@ export const featuredApps: ShowcaseItem[] = appConcepts.map((app, index): Showca
   };
 });
 
+const stockEventPhotos: DetailMedia[] = [
+  { type: "image", src: "/events/stock/teamwork.jpg", label: "Team collaborating around laptops", caption: "A little collaboration, a lot of ideas.", stock: true, credit: { label: "Annie Spratt / Unsplash", url: "https://unsplash.com/photos/group-of-people-using-laptop-computer-QckxruozjRg" } },
+  { type: "image", src: "/events/stock/laptop-workshop.jpg", label: "Laptops and notebooks around a shared table", caption: "Space to work on the next big thing.", stock: true, credit: { label: "Marvin Meyer / Unsplash", url: "https://unsplash.com/photos/people-sitting-down-near-table-with-assorted-laptop-computers-SYTO3xs06fU" } },
+];
+const stockHikePhotos: DetailMedia[] = [
+  { type: "image", src: "/events/stock/trail-hike.jpg", label: "Friends hiking along a mountain trail", caption: "A change of scenery, together.", stock: true, credit: { label: "Timur Shakerzianov / Unsplash", url: "https://unsplash.com/photos/group-of-friends-hiking-on-a-mountain-trail-NDrFQQORTRU" } },
+  { type: "image", src: "/events/stock/forest-hike.jpg", label: "Hikers following a forest path", caption: "Taking the conversation outside.", stock: true, credit: { label: "Timur Shakerzianov / Unsplash", url: "https://unsplash.com/photos/group-of-hikers-walking-on-a-path-in-a-forest-Xsit2UbxCec" } },
+];
+
 export const pastEvents: ShowcaseItem[] = galleryEvents.slice(0, 4).map((event) => ({
   id: event.id,
   title: event.title,
@@ -80,11 +90,10 @@ export const pastEvents: ShowcaseItem[] = galleryEvents.slice(0, 4).map((event) 
   media: event.media,
   gallery: [
     { ...event.media, label: event.title, caption: event.caption },
-    { type: "placeholder", label: "Event photo 2", caption: "More photos from this event coming soon." },
-    { type: "placeholder", label: "Event photo 3" },
+    ...(event.id === "hollywood-hike" ? stockHikePhotos : stockEventPhotos),
   ],
   facts: [{ label: "When", value: event.date }, { label: "With", value: "The iOSC community" }],
-  sections: [{ heading: "About the event", body: event.caption }, { heading: "From the event", body: "More photos and event notes will be added here." }],
+  sections: [{ heading: "About the event", body: event.caption }],
 }));
 
 export function eventShowcaseBySlug(slug: string): ShowcaseItem | undefined {
@@ -95,7 +104,7 @@ export function eventShowcaseBySlug(slug: string): ShowcaseItem | undefined {
   return {
     id: event.slug, title: event.title, detail: event.date, description: event.description,
     media: { type: "image", src: event.graphic },
-    gallery: [{ type: "image", src: event.graphic, label: event.title }, { type: "placeholder", label: "Event photo 2" }, { type: "placeholder", label: "Event photo 3" }],
+    gallery: [{ type: "image", src: event.graphic, label: event.title }, ...stockEventPhotos],
     facts: [{ label: "When", value: `${event.date} · ${event.time}` }],
     sections: [{ heading: "About the event", body: event.description }],
   };

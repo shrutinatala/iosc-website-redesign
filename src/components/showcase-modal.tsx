@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { useGalleryTransition } from "@/components/gallery-transition";
 import { cancelMediaFlight, captureGalleryOrigin, createMediaFlight, moveMediaFlight, placeMediaFlight, type MediaFlight, type GalleryOrigin } from "@/components/shared-media";
 
-const OPEN_DURATION = 900;
-const CLOSE_DURATION = 750;
+const OPEN_DURATION = 720;
+const CLOSE_DURATION = 600;
 
 function mediaDestination(stage: HTMLElement) {
   return { ...stage.getBoundingClientRect().toJSON(), fit: "contain" as const, radius: "14px 14px 0px 0px" };
@@ -145,8 +145,8 @@ export function ShowcaseModal({ children, titleId }: { children: ReactNode; titl
 
   return (
     <dialog ref={dialogRef} className="showcase-dialog" aria-labelledby={titleId} onCancel={(event) => { event.preventDefault(); void close(); }} onClick={(event) => { if (event.target === event.currentTarget) void close(); }}>
+      <button className="detail-close" type="button" aria-label="Close detail view" onClick={() => void close()} autoFocus>×</button>
       <div ref={panelRef} className="showcase-dialog-panel" data-phase="opening">
-        <button className="detail-close" type="button" aria-label="Close detail view" onClick={() => void close()} autoFocus>×</button>
         {children}
       </div>
     </dialog>

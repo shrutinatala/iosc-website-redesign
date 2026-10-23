@@ -1,5 +1,9 @@
 "use client";
 
+// Cards and the viewer share a source resolution so expansion never magnifies
+// a thumbnail before swapping to a sharper image at the destination.
+export const SHOWCASE_IMAGE_SIZES = "(max-width: 1344px) 94vw, 1280px";
+
 export type MediaRect = { x: number; y: number; width: number; height: number };
 export type GalleryOrigin = MediaRect & {
   trigger: HTMLElement;
@@ -19,7 +23,9 @@ export function captureGalleryOrigin(trigger: HTMLElement): GalleryOrigin {
     // Capture decoded pixels so the moving copy cannot flash while an img clone
     // loads or decodes independently of the visible gallery image.
     const canvas = document.createElement("canvas");
-    const scale = Math.min(1, 1600 / Math.max(media.naturalWidth, media.naturalHeight));
+    // Responsive images report density-corrected natural dimensions. Keep
+    // enough backing pixels for the full-size viewer on high-DPI displays.
+    const scale = window.devicePixelRatio || 1;
     canvas.width = Math.round(media.naturalWidth * scale);
     canvas.height = Math.round(media.naturalHeight * scale);
     canvas.getContext("2d")?.drawImage(media, 0, 0, canvas.width, canvas.height);

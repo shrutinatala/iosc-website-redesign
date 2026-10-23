@@ -153,39 +153,59 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--aqua); outline-
 .join-actions { display: flex; gap: 16px; margin-top: 28px; flex-wrap: wrap; }
 
 /* Detail routes open over the gallery and remain directly addressable. */
-.showcase-dialog { position: fixed; inset: 0; padding: 0; margin: auto; width: min(1000px, calc(100vw - 64px)); max-width: none; max-height: none; border: 0; background: transparent; overflow: visible; color: var(--text); }
+.showcase-dialog { position: fixed; inset: 0; padding: 0; margin: auto; width: min(1280px, calc(100vw - 64px)); max-width: none; max-height: none; border: 0; background: transparent; overflow: visible; color: var(--text); }
 .showcase-dialog::backdrop { background: rgb(0 0 0 / .58); animation: backdrop-in 180ms ease; transition: background 180ms; }
 .showcase-dialog[data-closing="true"]::backdrop { background: transparent; }
 @keyframes backdrop-in { from { opacity: 0; } to { opacity: 1; } }
 .showcase-dialog-panel { position: relative; max-height: 90dvh; overflow-y: auto; overscroll-behavior: contain; border-radius: 14px; background: white; box-shadow: 0 24px 64px rgb(0 0 0 / .2); }
-.showcase-dialog-panel .detail-body, .showcase-dialog-panel .detail-close { transition: opacity 220ms; }
+.showcase-dialog-panel .detail-body, .showcase-dialog .detail-close, .showcase-dialog-panel .detail-gallery-toolbar { transition: opacity 220ms; }
 .showcase-dialog-panel .detail-content { transition: background 220ms; }
+.showcase-dialog-panel .detail-media-stage { transition: background-color 240ms ease-out; }
 .showcase-dialog-panel:is([data-phase="opening"], [data-phase="closing"]) { scrollbar-color: transparent transparent; }
 .showcase-dialog-panel[data-phase="closing"] { background: transparent; box-shadow: none; }
 .showcase-dialog-panel[data-phase="closing"] .detail-content { background: transparent; }
 .showcase-dialog-panel[data-phase="closing"] .detail-body { opacity: 0; pointer-events: none; }
-.showcase-dialog-panel[data-phase="closing"] .detail-close { opacity: 0; pointer-events: none; }
-.showcase-dialog-panel:is([data-phase="opening"], [data-phase="closing"]) .detail-media-stage { visibility: hidden; }
+.showcase-dialog[data-closing="true"] .detail-close { opacity: 0; pointer-events: none; }
+.showcase-dialog-panel[data-phase="closing"] .detail-gallery-toolbar { opacity: 0; pointer-events: none; }
+.showcase-dialog-panel:is([data-phase="opening"], [data-phase="closing"]) .detail-media-stage { visibility: hidden; background-color: transparent; transition: none; }
 .shared-media-flight { position: fixed; inset: 0; z-index: 1000; overflow: hidden; background: transparent; pointer-events: none; contain: strict; will-change: clip-path; }
 .shared-media-flight .shared-media-visual { position: absolute; left: 0; top: 0; display: block; max-width: none; margin: 0; padding: 0; border: 0; transform-origin: 0 0; transition: none; will-change: transform; }
-.detail-close { position: sticky; top: 16px; float: right; margin: 16px 16px -60px 0; z-index: 2; width: 44px; height: 44px; border-radius: 50%; border: 1px solid #ddd; color: #111; background: rgb(255 255 255 / .95); font-size: 30px; line-height: 1; box-shadow: 0 2px 12px #0001; }
+.detail-close { position: absolute; top: 16px; right: 16px; margin: 0; z-index: 2; width: 44px; height: 44px; border-radius: 50%; border: 1px solid #ddd; color: #111; background: rgb(255 255 255 / .95); font-size: 30px; line-height: 1; box-shadow: 0 2px 12px #0001; }
 .detail-content { overflow: hidden; border-radius: 14px; background: white; }
-.detail-media-stage { position: relative; width: 100%; height: clamp(220px, 35vw, 420px); background: #e9e9e9; }
-.detail-content-apps .detail-media-stage { height: min(72dvh, 700px); min-height: 360px; background: #e9eef5; }
+.detail-carousel:focus-visible { outline: 3px solid var(--aqua); outline-offset: -3px; }
+.detail-media-stage { position: relative; isolation: isolate; overflow: hidden; width: 100%; height: clamp(280px, 66dvh, 860px); background: #e9e9e9; touch-action: pan-y pinch-zoom; }
+.detail-content-apps .detail-media-stage { background: #e9eef5; }
+.detail-slide { position: absolute; inset: 0; }
+.detail-slide.is-changing { animation: carousel-slide-enter 260ms cubic-bezier(.2, .8, .2, 1) both; }
+@keyframes carousel-slide-enter { from { opacity: .5; transform: translateX(calc(var(--slide-direction) * 28px)); } to { opacity: 1; transform: translateX(0); } }
 .detail-media-stage img, .detail-media-stage video { display: block; width: 100%; height: 100%; object-fit: contain; }
+.detail-media-stage video { touch-action: auto; }
+.carousel-arrow { position: absolute; top: calc(50% - 24px); z-index: 1; display: grid; place-items: center; width: 48px; height: 48px; border: 1px solid #ffffffb3; border-radius: 50%; background: rgb(255 255 255 / .92); color: #18212d; box-shadow: 0 2px 16px #0002; cursor: pointer; transition: background 160ms, transform 160ms; }
+.carousel-arrow:hover { background: white; transform: scale(1.06); }
+.carousel-arrow svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.carousel-previous { left: 20px; }
+.carousel-next { right: 20px; }
+.detail-gallery-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 12px 24px; border-bottom: 1px solid var(--hairline); }
+.detail-gallery-caption { display: flex; align-items: center; gap: 18px; min-width: 0; }
+.carousel-count { flex-shrink: 0; font-size: 14px; font-weight: 650; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.carousel-count > span { color: var(--text-3); font-weight: 400; }
+.detail-gallery-caption p { margin: 0; font-size: 12px; line-height: 1.5; color: var(--text-2); }
+.detail-gallery-caption a { text-decoration: underline; text-underline-offset: 2px; }
+.stock-photo-label { color: var(--accent); font-weight: 650; }
 .detail-placeholder { display: flex; flex-direction: column; gap: 10px; align-items: center; justify-content: center; width: 100%; height: 100%; background: #ececec; color: #666; font-size: 22px; }
 .detail-placeholder small { font-size: 13px; color: #777; }
-.detail-body { padding: 32px 40px 44px; }
+.detail-body { padding: 20px 28px 24px; }
 .detail-eyebrow { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--accent); margin-bottom: 12px; }
-.detail-body h1 { color: var(--accent); font-size: clamp(30px, 3.5vw, 50px); line-height: 1.1; letter-spacing: -.03em; font-weight: 750; margin: 0; }
-.detail-summary { margin-top: 16px; font-size: 18px; line-height: 1.55; color: #444; }
-.detail-thumbnails { display: flex; gap: 12px; margin-top: 28px; padding: 4px; overflow-x: auto; }
-.detail-thumbnail { position: relative; flex: 0 0 116px; height: 82px; border: 2px solid transparent; border-radius: 8px; overflow: hidden; padding: 0; background: #eee; color: #626262; font-size: 12px; }
+.detail-body h1 { color: var(--accent); font-size: clamp(22px, 2.3vw, 30px); line-height: 1.15; letter-spacing: -.025em; font-weight: 750; margin: 0; }
+.detail-summary { margin-top: 10px; font-size: 14px; line-height: 1.55; color: #444; }
+.detail-thumbnails { display: flex; flex-shrink: 0; max-width: 45%; gap: 8px; padding: 4px; overflow-x: auto; }
+.detail-thumbnail { position: relative; flex: 0 0 72px; height: 48px; border: 2px solid transparent; border-radius: 6px; overflow: hidden; padding: 0; background: #eee; color: #626262; font-size: 12px; cursor: pointer; }
 .detail-thumbnail span { display: block; padding: 10px; }
 .detail-thumbnail img, .detail-thumbnail video { width: 100%; height: 100%; object-fit: cover; display: block; }
 .detail-thumbnail[aria-pressed="true"] { border-color: var(--accent); outline: 1px solid var(--accent); outline-offset: 2px; }
 .detail-thumbnail .thumbnail-play { position: absolute; inset: 0; display: grid; place-items: center; color: white; text-shadow: 0 2px 8px #000; }
-.detail-media-caption { margin-top: 10px; min-height: 20px; font-size: 13px; line-height: 1.5; color: #666; }
+.detail-info { margin-top: 18px; }
+.detail-info summary { width: fit-content; min-height: 44px; padding-block: 12px; color: var(--accent); font-size: 14px; font-weight: 650; cursor: pointer; }
 .screenshot-credit { margin-top: 8px; font-size: 12px; line-height: 1.5; color: var(--text-3); }
 .screenshot-credit a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
 .detail-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; border-top: 1px solid #ddd; padding-top: 24px; margin-top: 24px; }
@@ -194,7 +214,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--aqua); outline-
 .detail-sections { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; margin-top: 32px; }
 .detail-sections h2 { color: var(--accent); font-size: 23px; font-weight: 700; margin-bottom: 10px; }
 .detail-sections p { font-size: 16px; line-height: 1.65; color: #444; }
-.detail-page { max-width: 1000px; }
+.detail-page { max-width: 1280px; }
 .detail-page .detail-content { border: 1px solid #eee; margin-top: 24px; }
 .detail-back { display: inline-flex; align-items: center; min-height: 44px; color: var(--accent); font-size: 16px; font-weight: 600; }
 
@@ -249,13 +269,19 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--aqua); outline-
   .sheet-backdrop { padding: 16px; }
   .showcase-dialog { width: calc(100% - 24px); }
   .showcase-dialog-panel { max-height: calc(100dvh - 24px); border-radius: 14px; }
-  .detail-media-stage { height: clamp(220px, 66vw, 360px); }
-  .detail-body { padding: 24px 20px 32px; }
-  .detail-summary { font-size: 16px; }
+  .detail-media-stage { height: clamp(260px, 60dvh, 720px); }
+  .detail-gallery-toolbar { flex-direction: column; align-items: stretch; gap: 8px; padding: 12px 16px; }
+  .detail-gallery-caption { gap: 12px; }
+  .detail-thumbnails { max-width: 100%; justify-content: center; }
+  .detail-body { padding: 18px 20px 24px; }
+  .detail-summary { font-size: 14px; }
   .detail-sections { grid-template-columns: 1fr; gap: 24px; }
-  .detail-thumbnail { flex-basis: 88px; height: 68px; }
+  .detail-thumbnail { flex-basis: 64px; height: 44px; }
+  .carousel-arrow { width: 44px; height: 44px; top: calc(50% - 22px); }
+  .carousel-previous { left: 10px; }
+  .carousel-next { right: 10px; }
   .detail-facts { gap: 16px; }
-  .detail-close { top: 12px; margin: 12px 12px -56px 0; }
+  .detail-close { top: 12px; right: 12px; }
 }
 
 @media (max-width: 480px) {

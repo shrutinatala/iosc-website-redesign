@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { pastEvents, type ShowcaseItem } from "@/data/home";
 import { useGalleryTransition } from "@/components/gallery-transition";
-import { captureGalleryOrigin } from "@/components/shared-media";
+import { captureGalleryOrigin, SHOWCASE_IMAGE_SIZES } from "@/components/shared-media";
 
 export function EventGallery({ items = pastEvents, kind = "events" }: { items?: ShowcaseItem[]; kind?: "apps" | "events" }) {
   const [openId, setOpenId] = useState<string | null>(null);
@@ -15,7 +15,7 @@ export function EventGallery({ items = pastEvents, kind = "events" }: { items?: 
       {items.map((item) => {
         const open = item.id === openId;
         const media = item.media?.type === "image"
-          ? <Image src={item.media.src} alt="" fill sizes={kind === "apps" ? "(max-width: 640px) 44vw, (max-width: 1024px) 30vw, 18vw" : "(max-width: 480px) 88vw, (max-width: 640px) 44vw, (max-width: 1024px) 30vw, 24vw"} />
+          ? <Image src={item.media.src} alt="" fill sizes={SHOWCASE_IMAGE_SIZES} />
           : item.media?.type === "video"
             ? <video src={`${item.media.src}#t=0.1`} muted loop playsInline preload="metadata" aria-label={item.title} onPointerEnter={(event) => { if (event.pointerType === "mouse" && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) void event.currentTarget.play().catch(() => {}); }} onPointerLeave={(event) => event.currentTarget.pause()} />
             : null;

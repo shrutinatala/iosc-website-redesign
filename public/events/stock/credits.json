@@ -1,0 +1,31 @@
+{
+  "license": "Unsplash License",
+  "licenseUrl": "https://unsplash.com/license",
+  "usage": "Illustrative stock photos, labeled separately from actual iOSC event media.",
+  "photos": [
+    {
+      "file": "teamwork.jpg",
+      "photographer": "Annie Spratt",
+      "source": "https://unsplash.com/photos/group-of-people-using-laptop-computer-QckxruozjRg",
+      "download": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=max&w=2400&q=85"
+    },
+    {
+      "file": "laptop-workshop.jpg",
+      "photographer": "Marvin Meyer",
+      "source": "https://unsplash.com/photos/people-sitting-down-near-table-with-assorted-laptop-computers-SYTO3xs06fU",
+      "download": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=max&w=2400&q=85"
+    },
+    {
+      "file": "trail-hike.jpg",
+      "photographer": "Timur Shakerzianov",
+      "source": "https://unsplash.com/photos/group-of-friends-hiking-on-a-mountain-trail-NDrFQQORTRU",
+      "download": "https://images.unsplash.com/photo-1770563181834-84edf4cedb07?auto=format&fit=max&w=2400&q=85"
+    },
+    {
+      "file": "forest-hike.jpg",
+      "photographer": "Timur Shakerzianov",
+      "source": "https://unsplash.com/photos/group-of-hikers-walking-on-a-path-in-a-forest-Xsit2UbxCec",
+      "download": "https://images.unsplash.com/photo-1770563182367-1e1b5c094b02?auto=format&fit=max&w=2400&q=85"
+    }
+  ]
+}
