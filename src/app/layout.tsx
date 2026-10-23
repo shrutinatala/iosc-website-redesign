@@ -1,7 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { SiteShell } from "@/components/site-shell";
 import { GalleryTransitionProvider } from "@/components/gallery-transition";
 import "./globals.css";
+
+export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover" };
 
 export const metadata: Metadata = {
   title: "iOSC — USC's Apple Platforms development club",

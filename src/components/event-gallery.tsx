@@ -32,7 +32,7 @@ export function EventGallery({ items = pastEvents, kind = "events" }: { items?: 
             }}
             onKeyDown={(event) => { if (event.key === "Escape") setOpenId(null); }}
             aria-label={`Open ${item.title}`}>
-            {kind === "apps" ? <span className="app-device"><span className="app-screen" data-gallery-media>{media}</span></span> : media}
+            {kind === "apps" ? <span className="app-device"><span className="app-screen" data-gallery-media>{media}</span></span> : <span className="event-cover" data-gallery-media>{media}</span>}
             <span id={`showcase-${item.id}`} className="showcase-caption">
               <span className="showcase-title">{item.title}</span>
               {item.detail ? <span className="showcase-detail">{item.detail}</span> : null}

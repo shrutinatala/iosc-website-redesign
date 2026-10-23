@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import type { Person } from "@/data/site";
 
@@ -83,15 +84,36 @@ function Portrait({ person }: { person: Person }) {
 
 export function PersonGrid({ people }: { people: Person[] }) {
   const [openId, setOpenId] = useState<string | null>(null);
+  const sheetRef = useRef<HTMLDivElement>(null);
   const open = people.find((person) => person.id === openId) ?? null;
 
   useEffect(() => {
     if (!open) return;
+    const previousFocus = document.activeElement;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const controls = () => Array.from(sheetRef.current?.querySelectorAll<HTMLElement>('a[href], button:not([disabled])') ?? []);
+    controls()[0]?.focus({ preventScroll: true });
     function onKey(event: KeyboardEvent) {
       if (event.key === "Escape") setOpenId(null);
+      if (event.key !== "Tab") return;
+      const items = controls();
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first?.focus();
+      }
     }
     document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = previousOverflow;
+      if (previousFocus instanceof HTMLElement && previousFocus.isConnected) previousFocus.focus({ preventScroll: true });
+    };
   }, [open]);
 
   return (
@@ -139,9 +161,10 @@ export function PersonGrid({ people }: { people: Person[] }) {
         ))}
       </div>
 
-      {open ? (
+      {open ? createPortal(
         <div className="sheet-backdrop" onClick={() => setOpenId(null)} role="presentation">
           <div
+            ref={sheetRef}
             className="sheet"
             role="dialog"
             aria-modal="true"
@@ -198,7 +221,8 @@ export function PersonGrid({ people }: { people: Person[] }) {
               Done
             </button>
           </div>
-        </div>
+        </div>,
+        document.body
       ) : null}
     </>
   );

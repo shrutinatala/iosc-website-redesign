@@ -9,7 +9,9 @@ const OPEN_DURATION = 720;
 const CLOSE_DURATION = 600;
 
 function mediaDestination(stage: HTMLElement) {
-  return { ...stage.getBoundingClientRect().toJSON(), fit: "contain" as const, radius: "14px 14px 0px 0px" };
+  const content = stage.closest(".detail-content");
+  const radius = content ? getComputedStyle(content).borderTopLeftRadius : "14px";
+  return { ...stage.getBoundingClientRect().toJSON(), fit: "contain" as const, radius: `${radius} ${radius} 0px 0px` };
 }
 
 function galleryDestination(source: GalleryOrigin) {

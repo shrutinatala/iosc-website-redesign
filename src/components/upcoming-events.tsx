@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { MonthCalendar } from "@/components/month-calendar";
+import { MobileDisclosure } from "@/components/mobile-disclosure";
 import { homepageEvents } from "@/data/home";
 
 export function UpcomingEvents() {
@@ -22,7 +23,9 @@ export function UpcomingEvents() {
           {event?.rsvpUrl ? <a href={event.rsvpUrl} className="rsvp-button" target="_blank" rel="noopener noreferrer">RSVP</a> : event ? <button className="rsvp-button" type="button" disabled title="Registration link coming soon">RSVP <span className="sr-only">— registration link coming soon</span></button> : null}
         </div>
       </div>
-      <MonthCalendar selectedDate={selectedDate} onSelect={setSelectedDate} />
+      <MobileDisclosure id="upcoming-calendar" label="Browse the calendar">
+        <MonthCalendar selectedDate={selectedDate} onSelect={setSelectedDate} />
+      </MobileDisclosure>
     </div>
   );
 }

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useCallback, useLayoutEffect, useRef } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 import { useSelectedLayoutSegment } from "next/navigation";
 import { siteConfig } from "@/data/site";
 
@@ -13,8 +13,8 @@ const LINKS = [
   { href: "/join", label: "Join Us", color: "var(--orange)", text: "#421907" },
 ];
 
-function Logo() {
-  return <Link href="/" aria-label="iOSC home" className="brand"><Image src="/iosc-logo-light.png" alt="iOSC" width={743} height={330} sizes="138px" /></Link>;
+function Logo({ onNavigate }: { onNavigate?: () => void }) {
+  return <Link href="/" aria-label="iOSC home" className="brand" onNavigate={onNavigate}><Image src="/iosc-logo-light.png" alt="iOSC" width={743} height={330} sizes="138px" /></Link>;
 }
 
 export function SiteShell({ children }: { children: React.ReactNode }) {
@@ -22,6 +22,31 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
   const activeHref = LINKS.find((link) => link.href === `/${segment ?? ""}`)?.href ?? "/";
   const navRef = useRef<HTMLElement>(null);
   const indicatorRef = useRef<HTMLSpanElement>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      setMenuOpen(false);
+      menuButtonRef.current?.focus();
+    };
+    const closeOutside = (event: PointerEvent) => {
+      if (event.target instanceof Node && !headerRef.current?.contains(event.target)) setMenuOpen(false);
+    };
+    const mobile = window.matchMedia("(max-width: 640px)");
+    const closeOnResize = () => { if (!mobile.matches) setMenuOpen(false); };
+    document.addEventListener("keydown", closeOnEscape);
+    document.addEventListener("pointerdown", closeOutside);
+    mobile.addEventListener("change", closeOnResize);
+    return () => {
+      document.removeEventListener("keydown", closeOnEscape);
+      document.removeEventListener("pointerdown", closeOutside);
+      mobile.removeEventListener("change", closeOnResize);
+    };
+  }, [menuOpen]);
 
   const selectLink = useCallback((link: HTMLAnchorElement) => {
     const nav = navRef.current;
@@ -57,9 +82,13 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="site-shell">
       <a href="#main-content" className="skip-link">Skip to content</a>
-      <header className="topbar">
-        <Logo />
-        <nav ref={navRef} aria-label="Primary navigation">
+      <header ref={headerRef} className="topbar">
+        <Logo onNavigate={() => setMenuOpen(false)} />
+        <button ref={menuButtonRef} className="mobile-menu-toggle" type="button" aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} aria-controls="mobile-navigation" onClick={() => setMenuOpen(!menuOpen)}>
+          <span>{menuOpen ? "Close" : "Menu"}</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">{menuOpen ? <path d="m6 6 12 12M6 18 18 6" /> : <path d="M4 7h16M4 12h16M4 17h16" />}</svg>
+        </button>
+        <nav ref={navRef} className="desktop-navigation" aria-label="Primary navigation">
           <span ref={indicatorRef} className="nav-indicator" aria-hidden="true" />
           {LINKS.map((link) => (
             <Link key={link.href} href={link.href} aria-current={activeHref === link.href ? "page" : undefined} className={`nav-link${link.href === "/join" ? " nav-cta" : ""}`} data-color={link.color} data-text={link.text}
@@ -71,6 +100,12 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
               {link.href === "/join" ? <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><path d="M4 16 16 4M5 4h11v11" /></svg> : null}
             </Link>
           ))}
+        </nav>
+        <nav id="mobile-navigation" className="mobile-navigation" aria-label="Mobile navigation" hidden={!menuOpen}>
+          <p>Explore iOSC</p>
+          {LINKS.map((link) => <Link key={link.href} href={link.href} aria-current={activeHref === link.href ? "page" : undefined} style={{ "--mobile-link-color": link.color, "--mobile-link-text": link.text } as CSSProperties} onNavigate={() => setMenuOpen(false)}>
+            {link.label}<span aria-hidden="true">↗</span>
+          </Link>)}
         </nav>
       </header>
       <div className="site-main"><div key={activeHref} className="page-transition">{children}</div></div>

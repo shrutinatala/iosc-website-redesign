@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { EventGallery } from "@/components/event-gallery";
 import { UpcomingEvents } from "@/components/upcoming-events";
-import { featuredApps } from "@/data/home";
+import { HomeSection } from "@/components/mobile-disclosure";
+import { featuredApps, pastEvents } from "@/data/home";
 
 export default function HomePage() {
   return (
@@ -17,18 +18,16 @@ export default function HomePage() {
         </div>
       </section>
       <div className="content-width home-sections">
-        <section aria-labelledby="upcoming-heading">
-          <h2 id="upcoming-heading" className="section-heading">Upcoming</h2>
+        <HomeSection id="upcoming" title="Upcoming" detail="Your next club event" defaultOpen>
           <UpcomingEvents />
-        </section>
-        <section aria-labelledby="apps-heading">
-          <h2 id="apps-heading" className="section-heading">Featured apps</h2>
+        </HomeSection>
+        <HomeSection id="apps" title="Featured apps" detail={`${featuredApps.length} apps to explore`}>
+          <p className="mobile-gallery-hint">Swipe to explore · Tap an app for a closer look</p>
           <EventGallery items={featuredApps} kind="apps" />
-        </section>
-        <section aria-labelledby="past-heading">
-          <h2 id="past-heading" className="section-heading">Past events</h2>
+        </HomeSection>
+        <HomeSection id="past" title="Past events" detail={`${pastEvents.length} events in the gallery`}>
           <EventGallery />
-        </section>
+        </HomeSection>
       </div>
     </main>
   );
