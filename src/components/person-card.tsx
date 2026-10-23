@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import type { Person } from "@/data/site";
 
 function initials(name: string) {
@@ -67,9 +68,13 @@ function Portrait({ person }: { person: Person }) {
     );
   }
   return (
-    <img
+    <Image
       src={person.image}
       alt=""
+      width={80}
+      height={80}
+      sizes="80px"
+      loading="lazy"
       className="h-full w-full object-cover"
       onError={() => setFailed(true)}
     />

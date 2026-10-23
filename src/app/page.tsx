@@ -1,54 +1,35 @@
+import Link from "next/link";
 import { EventGallery } from "@/components/event-gallery";
-import { MonthCalendar } from "@/components/month-calendar";
 import { UpcomingEvents } from "@/components/upcoming-events";
-import { siteConfig } from "@/data/site";
+import { featuredApps } from "@/data/home";
 
 export default function HomePage() {
   return (
-    <main className="mx-auto flex w-full max-w-6xl flex-col gap-14 px-4 pt-8 md:px-8 md:pt-14">
-      <section className="pointer-tilt max-w-3xl">
-        <img src="/iosc-logo.png" alt="iOSC" className="logo-for-dark mb-6 h-14 w-auto md:h-16" />
-        <img src="/iosc-logo-light.png" alt="iOSC" className="logo-for-light mb-6 h-14 w-auto md:h-16" />
-        <p className="text-[15px] font-medium tracking-wide" style={{ color: "var(--accent)" }}>
-          {siteConfig.tagline}
-        </p>
-        <h1 className="mt-3 text-[40px] font-semibold leading-[1.05] tracking-tight md:text-[64px]">
-          Build for Apple&apos;s platforms.
-        </h1>
-        <p className="mt-4 max-w-xl text-[17px] leading-relaxed" style={{ color: "var(--text-2)" }}>
-          Workshops, speaker nights, and apps that ship. A student club at USC for people who want to make things on iPhone, iPad, Mac, and beyond.
-        </p>
-      </section>
-
-      <section>
-        <div className="mb-4 flex items-end justify-between gap-4">
-          <h2 className="text-[28px] font-semibold tracking-tight">Past events</h2>
-          <p className="hidden text-[13px] md:block" style={{ color: "var(--text-3)" }}>
-            Hover a photo to open it
-          </p>
+    <main id="main-content">
+      <section className="hero" aria-labelledby="hero-title">
+        <div className="content-width">
+          <p className="hero-eyebrow">University of Southern California</p>
+          <h1 id="hero-title">USC’s <strong><span className="hero-highlight">Apple Platforms</span><br className="desktop-break" /> development club</strong></h1>
+          <div className="hero-actions">
+            <Link href="/join" className="hero-button hero-button-secondary">Interested?</Link>
+            <Link href="/join#applications" className="hero-button hero-button-primary">Apply now <span aria-hidden="true">↗</span></Link>
+          </div>
         </div>
-        <EventGallery />
       </section>
-
-      <section>
-        <div className="mb-4">
-          <h2 className="text-[28px] font-semibold tracking-tight">Public events</h2>
-          <p className="mt-1 text-[15px]" style={{ color: "var(--text-2)" }}>
-            A month of what&apos;s on the calendar.
-          </p>
-        </div>
-        <MonthCalendar />
-      </section>
-
-      <section>
-        <div className="mb-4">
-          <h2 className="text-[28px] font-semibold tracking-tight">Upcoming</h2>
-          <p className="mt-1 text-[15px]" style={{ color: "var(--text-2)" }}>
-            Everything still ahead, in order.
-          </p>
-        </div>
-        <UpcomingEvents />
-      </section>
+      <div className="content-width home-sections">
+        <section aria-labelledby="upcoming-heading">
+          <h2 id="upcoming-heading" className="section-heading">Upcoming</h2>
+          <UpcomingEvents />
+        </section>
+        <section aria-labelledby="apps-heading">
+          <h2 id="apps-heading" className="section-heading">Featured apps</h2>
+          <EventGallery items={featuredApps} kind="apps" />
+        </section>
+        <section aria-labelledby="past-heading">
+          <h2 id="past-heading" className="section-heading">Past events</h2>
+          <EventGallery />
+        </section>
+      </div>
     </main>
   );
 }

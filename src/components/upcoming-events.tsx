@@ -1,38 +1,28 @@
-import Link from "next/link";
-import { upcomingEventsList } from "@/data/site";
+"use client";
+
+import { useState } from "react";
+import Image from "next/image";
+import { MonthCalendar } from "@/components/month-calendar";
+import { homepageEvents } from "@/data/home";
 
 export function UpcomingEvents() {
-  const events = upcomingEventsList();
-
+  const [selectedDate, setSelectedDate] = useState(homepageEvents[0].date);
+  const event = homepageEvents.find((item) => item.date === selectedDate);
   return (
-    <div className="flex flex-col gap-3">
-      {events.length === 0 ? (
-        <p className="text-[17px]" style={{ color: "var(--text-2)" }}>
-          Nothing else on the calendar.
-        </p>
-      ) : (
-        events.map((event) => (
-          <Link key={event.slug} href={`/events/${event.slug}`} className="event-row">
-            <img src={event.graphic} alt="" className="event-row-art" />
-            <span className="min-w-0 flex-1">
-              <span className="block text-[12px] font-medium" style={{ color: "var(--accent)" }}>
-                {event.name}
-                {event.placeholder ? " · Sample" : ""}
-              </span>
-              <span className="mt-0.5 block truncate text-[18px] font-semibold">{event.title}</span>
-              <span className="mt-1 block text-[14px]" style={{ color: "var(--text-2)" }}>
-                {new Date(`${event.date}T12:00:00`).toLocaleDateString("en-US", {
-                  weekday: "short",
-                  month: "short",
-                  day: "numeric",
-                })}
-                {" · "}
-                {event.time}
-              </span>
-            </span>
-          </Link>
-        ))
-      )}
+    <div className="upcoming-grid">
+      <div className="next-event" aria-live="polite">
+        {event ? <Image key={event.image} src={event.image} alt="" fill sizes="(max-width: 640px) 100vw, 50vw" className="next-event-image" /> : null}
+        <p className="event-eyebrow">{event ? "Next event:" : "Selected date:"}</p>
+        <div className="next-event-content">
+          <h3>{event?.title ?? "See you soon"}</h3>
+          <p className="next-event-details">
+            {new Date(`${selectedDate}T12:00:00`).toLocaleDateString("en-US", { month: "long", day: "numeric" })}{event ? `, ${event.time}` : ""}
+            <br />{event?.location ?? "No events scheduled for this day."}
+          </p>
+          {event?.rsvpUrl ? <a href={event.rsvpUrl} className="rsvp-button" target="_blank" rel="noopener noreferrer">RSVP</a> : event ? <button className="rsvp-button" type="button" disabled title="Registration link coming soon">RSVP <span className="sr-only">— registration link coming soon</span></button> : null}
+        </div>
+      </div>
+      <MonthCalendar selectedDate={selectedDate} onSelect={setSelectedDate} />
     </div>
   );
 }

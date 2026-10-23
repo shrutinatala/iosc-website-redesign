@@ -1,0 +1,41 @@
+{
+  "usage": "Unmodified stock app screenshots illustrating fictional iOSC app concepts.",
+  "sources": [
+    {
+      "files": [
+        "calendar.png"
+      ],
+      "project": "FreeTimePicker",
+      "source": "https://github.com/fromkk/FreeTimePicker",
+      "license": "MIT",
+      "original": "https://raw.githubusercontent.com/fromkk/FreeTimePicker/master/images/search.png"
+    },
+    {
+      "files": [
+        "pinto-notes.png"
+      ],
+      "project": "Pinto Notes",
+      "source": "https://github.com/pinto-notes/pinto-notes",
+      "license": "MIT",
+      "original": "https://raw.githubusercontent.com/pinto-notes/pinto-notes/main/docs/images/iphone-lisbon.png"
+    },
+    {
+      "files": [
+        "community.png"
+      ],
+      "project": "Kith",
+      "source": "https://github.com/Significant-Hobbies/kith",
+      "license": "MIT",
+      "original": "https://raw.githubusercontent.com/Significant-Hobbies/kith/main/ios/artifacts/simulator/constellation.png"
+    },
+    {
+      "files": [
+        "travel.png"
+      ],
+      "project": "Smart Traveller / UberGuide",
+      "source": "https://github.com/hACKbUSTER/UberGuide-iOS",
+      "license": "MIT",
+      "original": "https://raw.githubusercontent.com/hACKbUSTER/UberGuide-iOS/master/ScreenShots/IMG_0460.PNG"
+    }
+  ]
+}

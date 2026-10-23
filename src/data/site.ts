@@ -35,7 +35,13 @@ export type Person = {
 
 const placeholderApp = (name: string): PersonApp => ({
   name,
-  summary: "Placeholder. Swap in an app this person actually shipped.",
+  summary: ({
+    Northstar: "Fictional demo: a calmer daily planner with priorities and focus sessions.",
+    "Desk Note": "Fictional demo: a flexible notebook for sketches, projects, and everyday ideas.",
+    "Studio Hours": "Fictional demo: discover campus study sessions and creative meetups.",
+    Signal: "Fictional demo: a personal music journal with mood-based collections.",
+    "Field Notes": "Fictional demo: save favorite walks, viewpoints, and outdoor discoveries.",
+  } as Record<string, string>)[name] ?? "Placeholder. Swap in an app this person actually shipped.",
   placeholder: true,
 });
 

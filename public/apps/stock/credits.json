@@ -1,0 +1,49 @@
+{
+  "project": "iOSAppTemplates",
+  "author": "Muhittin Camdali",
+  "source": "https://github.com/muhittincamdali/iOSAppTemplates",
+  "license": "MIT",
+  "images": [
+    {
+      "file": "ProductivityApp-dark.jpg",
+      "url": "https://raw.githubusercontent.com/muhittincamdali/iOSAppTemplates/master/docs/images/ProductivityApp-dark.jpg"
+    },
+    {
+      "file": "ProductivityApp-light.jpg",
+      "url": "https://raw.githubusercontent.com/muhittincamdali/iOSAppTemplates/master/docs/images/ProductivityApp-light.jpg"
+    },
+    {
+      "file": "NotesKnowledgeApp-dark.jpg",
+      "url": "https://raw.githubusercontent.com/muhittincamdali/iOSAppTemplates/master/docs/images/NotesKnowledgeApp-dark.jpg"
+    },
+    {
+      "file": "NotesKnowledgeApp-light.jpg",
+      "url": "https://raw.githubusercontent.com/muhittincamdali/iOSAppTemplates/master/docs/images/NotesKnowledgeApp-light.jpg"
+    },
+    {
+      "file": "EducationApp-light.jpg",
+      "url": "https://raw.githubusercontent.com/muhittincamdali/iOSAppTemplates/master/docs/images/EducationApp-light.jpg"
+    },
+    {
+      "file": "EducationApp-dark.jpg",
+      "url": "https://raw.githubusercontent.com/muhittincamdali/iOSAppTemplates/master/docs/images/EducationApp-dark.jpg"
+    },
+    {
+      "file": "MusicPodcastApp-dark.jpg",
+      "url": "https://raw.githubusercontent.com/muhittincamdali/iOSAppTemplates/master/docs/images/MusicPodcastApp-dark.jpg"
+    },
+    {
+      "file": "MusicPodcastApp-light.jpg",
+      "url": "https://raw.githubusercontent.com/muhittincamdali/iOSAppTemplates/master/docs/images/MusicPodcastApp-light.jpg"
+    },
+    {
+      "file": "TravelPlannerApp-dark.jpg",
+      "url": "https://raw.githubusercontent.com/muhittincamdali/iOSAppTemplates/master/docs/images/TravelPlannerApp-dark.jpg"
+    },
+    {
+      "file": "TravelPlannerApp-light.jpg",
+      "url": "https://raw.githubusercontent.com/muhittincamdali/iOSAppTemplates/master/docs/images/TravelPlannerApp-light.jpg"
+    }
+  ],
+  "usage": "Stock interface screenshots used to illustrate fictional iOSC app concepts."
+}

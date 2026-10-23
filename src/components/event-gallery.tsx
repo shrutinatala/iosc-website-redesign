@@ -1,80 +1,44 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { galleryEvents, type GalleryEvent } from "@/data/site";
+import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { pastEvents, type ShowcaseItem } from "@/data/home";
+import { useGalleryTransition } from "@/components/gallery-transition";
+import { captureGalleryOrigin } from "@/components/shared-media";
 
-function drift(index: number) {
-  const n = Math.sin(index * 12.9898) * 43758.5453;
-  const unit = n - Math.floor(n);
-  const n2 = Math.sin(index * 78.233) * 12345.678;
-  const unit2 = n2 - Math.floor(n2);
-  return {
-    rot: (unit - 0.5) * 8,
-    x: (unit2 - 0.5) * 18,
-    y: (unit - 0.5) * 14,
-    depth: 16 + unit * 10,
-    delay: `${index * 0.35}s`,
-  };
-}
-
-function Media({ event }: { event: GalleryEvent }) {
-  if (event.media.type === "video") {
-    return (
-      <video src={event.media.src} muted loop playsInline autoPlay aria-label={event.title} />
-    );
-  }
-  return <img src={event.media.src} alt="" />;
-}
-
-export function EventGallery() {
+export function EventGallery({ items = pastEvents, kind = "events" }: { items?: ShowcaseItem[]; kind?: "apps" | "events" }) {
   const [openId, setOpenId] = useState<string | null>(null);
-  const gridRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const grid = gridRef.current;
-    if (!grid) return;
-    function onMove(event: MouseEvent) {
-      const px = (event.clientX / window.innerWidth - 0.5) * 2;
-      const py = (event.clientY / window.innerHeight - 0.5) * 2;
-      grid?.style.setProperty("--px", px.toFixed(3));
-      grid?.style.setProperty("--py", py.toFixed(3));
-    }
-    window.addEventListener("mousemove", onMove);
-    return () => window.removeEventListener("mousemove", onMove);
-  }, []);
-
+  const origin = useGalleryTransition();
   return (
-    <div ref={gridRef} className="float-grid" onMouseLeave={() => setOpenId(null)}>
-      {galleryEvents.map((item, index) => {
-        const motion = drift(index);
-        const open = openId === item.id;
+    <div className={`showcase showcase-${kind}`} onMouseLeave={() => setOpenId(null)}>
+      {items.map((item) => {
+        const open = item.id === openId;
+        const media = item.media?.type === "image"
+          ? <Image src={item.media.src} alt="" fill sizes={kind === "apps" ? "(max-width: 640px) 44vw, (max-width: 1024px) 30vw, 18vw" : "(max-width: 480px) 88vw, (max-width: 640px) 44vw, (max-width: 1024px) 30vw, 24vw"} />
+          : item.media?.type === "video"
+            ? <video src={`${item.media.src}#t=0.1`} muted loop playsInline preload="metadata" aria-label={item.title} onPointerEnter={(event) => { if (event.pointerType === "mouse" && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) void event.currentTarget.play().catch(() => {}); }} onPointerLeave={(event) => event.currentTarget.pause()} />
+            : null;
         return (
-          <button
-            key={item.id}
-            type="button"
-            className={`float-card${open ? " is-open" : ""}`}
-            style={{
-              ["--rot" as string]: `${motion.rot}deg`,
-              ["--dx" as string]: `${motion.x}px`,
-              ["--dy" as string]: `${motion.y}px`,
-              ["--depth" as string]: `${motion.depth}px`,
-              ["--delay" as string]: motion.delay,
+          <Link key={item.id} href={`/${kind}/${item.id}`} scroll={false} prefetch={true}
+            className={`showcase-card${open ? " is-expanded" : ""}${item.media ? " has-media" : ""}`}
+            onPointerEnter={(event) => { if (event.pointerType === "mouse") setOpenId(item.id); }}
+            onPointerLeave={() => setOpenId(null)}
+            onFocus={(event) => { if (event.currentTarget.matches(":focus-visible")) setOpenId(item.id); }}
+            onBlur={() => setOpenId(null)}
+            onClick={(event) => {
+              if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+              origin.current = captureGalleryOrigin(event.currentTarget);
             }}
-            onMouseEnter={() => setOpenId(item.id)}
-            onFocus={() => setOpenId(item.id)}
-            onClick={() => setOpenId(item.id)}
-            aria-expanded={open}
-            aria-label={item.title}
-          >
-            <span className="float-card-inner">
-              <Media event={item} />
-              <span className="float-caption">
-                <span className="block text-[12px] uppercase tracking-[0.08em] opacity-80">{item.date}</span>
-                <span className="mt-0.5 block text-[16px] font-semibold leading-tight">{item.title}</span>
-                <span className="mt-0.5 block text-[13px] leading-snug opacity-90">{item.caption}</span>
-              </span>
+            onKeyDown={(event) => { if (event.key === "Escape") setOpenId(null); }}
+            aria-label={`Open ${item.title}`}>
+            {kind === "apps" ? <span className="app-device"><span className="app-screen" data-gallery-media>{media}</span></span> : media}
+            <span id={`showcase-${item.id}`} className="showcase-caption">
+              <span className="showcase-title">{item.title}</span>
+              {item.detail ? <span className="showcase-detail">{item.detail}</span> : null}
+              <span className="showcase-description">{item.description}</span>
             </span>
-          </button>
+          </Link>
         );
       })}
     </div>

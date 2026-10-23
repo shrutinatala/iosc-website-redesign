@@ -4,7 +4,7 @@ import { PersonGrid } from "@/components/person-card";
 import { alumni, eboard, members } from "@/data/site";
 
 export const metadata = {
-  title: "People — iOSC",
+  title: "Team — iOSC",
 };
 
 function Section({
@@ -29,11 +29,8 @@ function Section({
 
 export default function PeoplePage() {
   return (
-    <main className="mx-auto w-full max-w-6xl px-4 pt-8 md:px-8 md:pt-14">
-      <h1 className="text-[40px] font-semibold tracking-tight md:text-[56px]">People</h1>
-      <p className="mt-3 max-w-xl text-[17px] leading-relaxed" style={{ color: "var(--text-2)" }}>
-        The e-board, members, and alumni. Tap a person to see the apps they&apos;ve made.
-      </p>
+    <main id="main-content" className="content-width inner-page">
+      <h1 className="page-heading">Team</h1>
 
       <Section eyebrow="Now" title="E-board">
         <PersonGrid people={eboard} />
