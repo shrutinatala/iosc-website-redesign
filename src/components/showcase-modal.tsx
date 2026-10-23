@@ -45,6 +45,7 @@ export function ShowcaseModal({ children, titleId }: { children: ReactNode; titl
   const closing = useRef(false);
   const flightRef = useRef<MediaFlight | null>(null);
   const sourceRef = useRef<GalleryOrigin | null>(null);
+  const markerRef = useRef("");
 
   useLayoutEffect(() => {
     const dialog = dialogRef.current;
@@ -58,6 +59,7 @@ export function ShowcaseModal({ children, titleId }: { children: ReactNode; titl
     const source = candidate?.trigger.getAttribute("href")?.split("/").pop() === titleId.replace("detail-title-", "") ? candidate : null;
     sourceRef.current = source;
     const marker = `${titleId}-${performance.now()}`;
+    markerRef.current = marker;
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const animate = Boolean(source?.trigger.isConnected && source.snapshot && !reducedMotion);
     const previousOverflow = document.body.style.overflow;
@@ -79,6 +81,9 @@ export function ShowcaseModal({ children, titleId }: { children: ReactNode; titl
       panel.dataset.phase = "open";
     };
     window.addEventListener("resize", removeFlight);
+    // Changing slides during the opening motion must retire the old photo copy.
+    const observer = new MutationObserver(() => { if (!closing.current) removeFlight(); });
+    observer.observe(stage, { attributes: true, attributeFilter: ["data-media-index"] });
 
     if (source && animate) {
       source.trigger.setAttribute("data-shared-origin", marker);
@@ -104,20 +109,26 @@ export function ShowcaseModal({ children, titleId }: { children: ReactNode; titl
       disposed = true;
       cancelAnimationFrame(handoffFrame);
       window.removeEventListener("resize", removeFlight);
+      observer.disconnect();
       const restore = () => {
         if (source?.trigger.getAttribute("data-shared-origin") === marker) source.trigger.removeAttribute("data-shared-origin");
         if (source?.trigger.isConnected && !document.querySelector("dialog[open]")) source.trigger.focus({ preventScroll: true });
       };
       const flight = flightRef.current;
-      const returning = !closing.current && source?.trigger.isConnected && source.snapshot && !reducedMotion && stage.dataset.mediaIndex === "0" && panel.scrollTop === 0;
-      const returnFlight = returning ? flight ?? createMediaFlight(source) : null;
+      const returningSource = !closing.current && source?.trigger.isConnected && !reducedMotion && stage.getBoundingClientRect().top >= panel.getBoundingClientRect().top - 1
+        ? { ...source, snapshot: captureGalleryOrigin(stage).snapshot }
+        : null;
+      const reuseFlight = source?.mediaIndex === Number(stage.dataset.mediaIndex) ? flight : null;
+      const returnFlight = returningSource?.snapshot ? reuseFlight ?? createMediaFlight(returningSource) : null;
       // Browser Back removes the route immediately. Keep a visual copy of the
       // panel so it can fade over the revealed page alongside the returning photo.
       const dismissal = !closing.current && !reducedMotion ? captureDismissal(panel, Boolean(returnFlight)) : null;
       if (returnFlight) {
-        if (!flight) placeMediaFlight(returnFlight, mediaDestination(stage));
+        source?.trigger.setAttribute("data-shared-origin", marker);
+        if (returnFlight !== flight) placeMediaFlight(returnFlight, mediaDestination(stage));
         cancelMediaFlight(returnFlight);
-      } else if (flight) {
+      }
+      if (flight && flight !== returnFlight) {
         cancelMediaFlight(flight);
         flight.frame.remove();
       }
@@ -153,18 +164,25 @@ export function ShowcaseModal({ children, titleId }: { children: ReactNode; titl
     const source = sourceRef.current;
     if (panel && dialog && stage && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       dialog.dataset.closing = "true";
-      // A scrolled-away cover fades out instead of jumping the panel to its top.
-      const visible = source?.trigger.isConnected && source.snapshot && stage.getBoundingClientRect().top >= panel.getBoundingClientRect().top - 1 && stage.dataset.mediaIndex === "0";
+      // Capture the displayed slide, which may now differ from the opening cover.
+      const returningSource = source?.trigger.isConnected ? { ...source, snapshot: captureGalleryOrigin(stage).snapshot } : null;
+      const visible = returningSource?.snapshot && stage.getBoundingClientRect().top >= panel.getBoundingClientRect().top - 1;
       if (visible) {
+        source?.trigger.setAttribute("data-shared-origin", markerRef.current);
         let flight = flightRef.current;
+        if (flight && source?.mediaIndex !== Number(stage.dataset.mediaIndex)) {
+          cancelMediaFlight(flight);
+          flight.frame.remove();
+          flight = null;
+        }
         if (!flight) {
-          flight = createMediaFlight(source);
+          flight = createMediaFlight(returningSource);
           placeMediaFlight(flight, mediaDestination(stage));
           dialog.appendChild(flight.frame);
           flightRef.current = flight;
         }
         panel.dataset.phase = "closing";
-        await Promise.all([fadePanel(panel), moveMediaFlight(flight, galleryDestination(source), CLOSE_DURATION)]);
+        await Promise.all([fadePanel(panel), moveMediaFlight(flight, galleryDestination(returningSource), CLOSE_DURATION)]);
       } else {
         if (flightRef.current) {
           cancelMediaFlight(flightRef.current);

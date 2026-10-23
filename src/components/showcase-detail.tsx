@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 import Image, { getImageProps } from "next/image";
 import type { DetailMedia, ShowcaseItem } from "@/data/home";
 import { SHOWCASE_IMAGE_SIZES } from "@/components/shared-media";
+import { useGalleryPreview } from "@/components/gallery-transition";
 
 function Media({ media }: { media: DetailMedia }) {
   if (media.type === "placeholder") return <div className="detail-placeholder"><span>{media.label}</span><small>Coming soon</small></div>;
@@ -12,7 +13,9 @@ function Media({ media }: { media: DetailMedia }) {
 }
 
 export function ShowcaseDetail({ item, kind }: { item: ShowcaseItem; kind: "apps" | "events" }) {
-  const [selected, setSelected] = useState(0);
+  const { previews, setPreview } = useGalleryPreview();
+  const previewKey = `${kind}/${item.id}`;
+  const [selected, setSelected] = useState(() => previews[previewKey] ?? 0);
   const [direction, setDirection] = useState(0);
   const touchStart = useRef<{ x: number; y: number } | null>(null);
   const media = item.gallery[selected];
@@ -22,6 +25,7 @@ export function ShowcaseDetail({ item, kind }: { item: ShowcaseItem; kind: "apps
     if (next === selected) return;
     setDirection(movement);
     setSelected(next);
+    setPreview(previewKey, next);
   };
 
   useEffect(() => {

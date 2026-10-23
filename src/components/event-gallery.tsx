@@ -4,24 +4,28 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { pastEvents, type ShowcaseItem } from "@/data/home";
-import { useGalleryTransition } from "@/components/gallery-transition";
+import { useGalleryPreview, useGalleryTransition } from "@/components/gallery-transition";
 import { captureGalleryOrigin, SHOWCASE_IMAGE_SIZES } from "@/components/shared-media";
 
 export function EventGallery({ items = pastEvents, kind = "events" }: { items?: ShowcaseItem[]; kind?: "apps" | "events" }) {
   const [openId, setOpenId] = useState<string | null>(null);
   const origin = useGalleryTransition();
+  const { previews } = useGalleryPreview();
   return (
     <div className={`showcase showcase-${kind}`} onMouseLeave={() => setOpenId(null)}>
       {items.map((item) => {
         const open = item.id === openId;
-        const media = item.media?.type === "image"
-          ? <Image src={item.media.src} alt="" fill sizes={SHOWCASE_IMAGE_SIZES} />
-          : item.media?.type === "video"
-            ? <video src={`${item.media.src}#t=0.1`} muted loop playsInline preload="metadata" aria-label={item.title} onPointerEnter={(event) => { if (event.pointerType === "mouse" && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) void event.currentTarget.play().catch(() => {}); }} onPointerLeave={(event) => event.currentTarget.pause()} />
+        const index = previews[`${kind}/${item.id}`];
+        const preview = index === undefined ? item.media : item.gallery[index];
+        const media = preview?.type === "image"
+          ? <Image src={preview.src} alt="" fill sizes={SHOWCASE_IMAGE_SIZES} />
+          : preview?.type === "video"
+            ? <video src={`${preview.src}#t=0.1`} muted loop playsInline preload="metadata" aria-label={item.title} onPointerEnter={(event) => { if (event.pointerType === "mouse" && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) void event.currentTarget.play().catch(() => {}); }} onPointerLeave={(event) => event.currentTarget.pause()} />
             : null;
         return (
           <Link key={item.id} href={`/${kind}/${item.id}`} scroll={false} prefetch={true}
-            className={`showcase-card${open ? " is-expanded" : ""}${item.media ? " has-media" : ""}`}
+            data-gallery-index={index ?? 0}
+            className={`showcase-card${open ? " is-expanded" : ""}${preview ? " has-media" : ""}`}
             onPointerEnter={(event) => { if (event.pointerType === "mouse") setOpenId(item.id); }}
             onPointerLeave={() => setOpenId(null)}
             onFocus={(event) => { if (event.currentTarget.matches(":focus-visible")) setOpenId(item.id); }}

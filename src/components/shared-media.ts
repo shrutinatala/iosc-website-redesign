@@ -7,6 +7,7 @@ export const SHOWCASE_IMAGE_SIZES = "(max-width: 1344px) 94vw, 1280px";
 export type MediaRect = { x: number; y: number; width: number; height: number };
 export type GalleryOrigin = MediaRect & {
   trigger: HTMLElement;
+  mediaIndex: number;
   radius: string;
   fit: "cover" | "contain";
   zoom: number;
@@ -43,7 +44,7 @@ export function captureGalleryOrigin(trigger: HTMLElement): GalleryOrigin {
   const transform = media ? getComputedStyle(media).transform : "none";
   const zoom = transform === "none" ? 1 : new DOMMatrix(transform).a;
   const fit = media && getComputedStyle(media).objectFit === "contain" ? "contain" : "cover";
-  return { x: rect.x, y: rect.y, width: rect.width, height: rect.height, trigger, snapshot, zoom, radius: style.borderRadius, fit };
+  return { x: rect.x, y: rect.y, width: rect.width, height: rect.height, trigger, mediaIndex: Number(trigger.dataset.galleryIndex ?? trigger.dataset.mediaIndex ?? 0), snapshot, zoom, radius: style.borderRadius, fit };
 }
 
 export type MediaFlight = {
