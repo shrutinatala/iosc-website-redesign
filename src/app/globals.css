@@ -110,7 +110,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--aqua); outline-
 .showcase-apps .showcase-card.is-expanded .app-device { transform: translateY(-2px) scale(1.025); box-shadow: 0 12px 28px #192a461f; }
 .showcase-events .showcase-card { height: clamp(280px, 26.2vw, 377px); }
 .showcase-card.is-expanded { box-shadow: 0 8px 24px #192a4626; }
-.showcase-card[data-shared-origin] { opacity: 0; }
+.showcase-card[data-shared-origin] [data-gallery-media] { opacity: 0; }
 .showcase-card img, .showcase-card video { width: 100%; height: 100%; object-fit: cover; display: block; }
 .showcase-events .showcase-card.is-expanded { transform: scale(1.025); z-index: 1; }
 .showcase-apps .app-screen > img { object-fit: contain; object-position: center; }
@@ -159,19 +159,18 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--aqua); outline-
 /* Detail routes open over the gallery and remain directly addressable. */
 .showcase-dialog { position: fixed; inset: 0; padding: 0; margin: auto; width: min(1280px, calc(100vw - 64px)); max-width: none; max-height: none; border: 0; background: transparent; overflow: visible; color: var(--text); }
 .showcase-dialog::backdrop { background: rgb(0 0 0 / .58); animation: backdrop-in 180ms ease; transition: background 180ms; }
-.showcase-dialog[data-closing="true"]::backdrop { background: transparent; }
+.showcase-dialog[data-closing="true"]::backdrop { background: transparent; transition: none; animation: none; }
 @keyframes backdrop-in { from { opacity: 0; } to { opacity: 1; } }
 .showcase-dialog-panel { position: relative; max-height: 90dvh; overflow-y: auto; overscroll-behavior: contain; border-radius: 14px; background: white; box-shadow: 0 24px 64px rgb(0 0 0 / .2); }
 .showcase-dialog-panel .detail-body, .showcase-dialog .detail-close, .showcase-dialog-panel .detail-gallery-toolbar { transition: opacity 220ms; }
 .showcase-dialog-panel .detail-content { transition: background 220ms; }
 .showcase-dialog-panel .detail-media-stage { transition: background-color 240ms ease-out; }
 .showcase-dialog-panel:is([data-phase="opening"], [data-phase="closing"]) { scrollbar-color: transparent transparent; }
-.showcase-dialog-panel[data-phase="closing"] { background: transparent; box-shadow: none; }
-.showcase-dialog-panel[data-phase="closing"] .detail-content { background: transparent; }
-.showcase-dialog-panel[data-phase="closing"] .detail-body { opacity: 0; pointer-events: none; }
 .showcase-dialog[data-closing="true"] .detail-close { opacity: 0; pointer-events: none; }
-.showcase-dialog-panel[data-phase="closing"] .detail-gallery-toolbar { opacity: 0; pointer-events: none; }
-.showcase-dialog-panel:is([data-phase="opening"], [data-phase="closing"]) .detail-media-stage { visibility: hidden; background-color: transparent; transition: none; }
+.showcase-dialog-panel[data-phase="opening"] .detail-media-stage { visibility: hidden; background-color: transparent; transition: none; }
+.showcase-dialog-panel[data-phase="closing"] .detail-slide, .showcase-dismissal[data-returning="true"] .detail-slide { visibility: hidden; }
+.showcase-dismissal { position: fixed; z-index: 999; pointer-events: none; }
+.showcase-dismissal .showcase-dialog-panel { width: 100%; height: 100%; max-height: none; }
 .shared-media-flight { position: fixed; inset: 0; z-index: 1000; overflow: hidden; background: transparent; pointer-events: none; contain: strict; will-change: clip-path; }
 .shared-media-flight .shared-media-visual { position: absolute; left: 0; top: 0; display: block; max-width: none; margin: 0; padding: 0; border: 0; transform-origin: 0 0; transition: none; will-change: transform; }
 .detail-close { position: absolute; top: 16px; right: 16px; margin: 0; z-index: 2; width: 44px; height: 44px; border-radius: 50%; border: 1px solid #ddd; color: #111; background: rgb(255 255 255 / .95); font-size: 30px; line-height: 1; box-shadow: 0 2px 12px #0001; }
@@ -324,7 +323,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--aqua); outline-
   #applications { padding: 22px; scroll-margin-top: 16px; }
   #applications .btn-accent { width: 100%; }
   .calendly-frame { height: 80dvh; min-height: 540px; }
-  .showcase-dialog { width: 100%; height: 100dvh; margin: 0; background: white; }
+  .showcase-dialog { width: 100%; height: 100dvh; margin: 0; background: transparent; }
   .showcase-dialog-panel { height: 100%; max-height: none; border-radius: 0; padding-top: calc(64px + env(safe-area-inset-top)); padding-bottom: env(safe-area-inset-bottom); scroll-padding-top: 72px; }
   .showcase-dialog-panel .detail-content { border-radius: 0; }
   .showcase-dialog .detail-close { top: calc(10px + env(safe-area-inset-top)); right: 16px; }

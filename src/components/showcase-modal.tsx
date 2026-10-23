@@ -7,6 +7,25 @@ import { cancelMediaFlight, captureGalleryOrigin, createMediaFlight, moveMediaFl
 
 const OPEN_DURATION = 720;
 const CLOSE_DURATION = 600;
+const FADE_DURATION = 400;
+
+function fadePanel(panel: HTMLElement) {
+  return panel.animate([{ opacity: getComputedStyle(panel).opacity }, { opacity: 0 }], { duration: FADE_DURATION, easing: "ease-out", fill: "forwards" }).finished.catch(() => {});
+}
+
+function captureDismissal(panel: HTMLElement, returning: boolean) {
+  const bounds = panel.getBoundingClientRect();
+  const layer = document.createElement("div");
+  layer.className = "showcase-dismissal";
+  layer.dataset.returning = String(returning);
+  layer.setAttribute("aria-hidden", "true");
+  layer.inert = true;
+  Object.assign(layer.style, { left: `${bounds.left}px`, top: `${bounds.top}px`, width: `${bounds.width}px`, height: `${bounds.height}px` });
+  const copy = panel.cloneNode(true) as HTMLElement;
+  copy.dataset.phase = "open";
+  layer.appendChild(copy);
+  return { layer, copy, scrollTop: panel.scrollTop };
+}
 
 function mediaDestination(stage: HTMLElement) {
   const content = stage.closest(".detail-content");
@@ -92,6 +111,9 @@ export function ShowcaseModal({ children, titleId }: { children: ReactNode; titl
       const flight = flightRef.current;
       const returning = !closing.current && source?.trigger.isConnected && source.snapshot && !reducedMotion && stage.dataset.mediaIndex === "0" && panel.scrollTop === 0;
       const returnFlight = returning ? flight ?? createMediaFlight(source) : null;
+      // Browser Back removes the route immediately. Keep a visual copy of the
+      // panel so it can fade over the revealed page alongside the returning photo.
+      const dismissal = !closing.current && !reducedMotion ? captureDismissal(panel, Boolean(returnFlight)) : null;
       if (returnFlight) {
         if (!flight) placeMediaFlight(returnFlight, mediaDestination(stage));
         cancelMediaFlight(returnFlight);
@@ -105,6 +127,11 @@ export function ShowcaseModal({ children, titleId }: { children: ReactNode; titl
       queueMicrotask(() => {
         // Effect replay is also a cleanup; only animate when the route has left.
         if (panel.isConnected) { returnFlight?.frame.remove(); return; }
+        if (dismissal) {
+          document.body.appendChild(dismissal.layer);
+          dismissal.copy.scrollTop = dismissal.scrollTop;
+          void fadePanel(dismissal.layer).finally(() => dismissal.layer.remove());
+        }
         if (returnFlight && source) {
           document.body.appendChild(returnFlight.frame);
           void moveMediaFlight(returnFlight, galleryDestination(source), CLOSE_DURATION).finally(() => {
@@ -124,9 +151,10 @@ export function ShowcaseModal({ children, titleId }: { children: ReactNode; titl
     const dialog = dialogRef.current;
     const stage = panel?.querySelector<HTMLElement>("[data-shared-media]");
     const source = sourceRef.current;
-    if (panel && dialog && stage && source?.trigger.isConnected && source.snapshot && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (panel && dialog && stage && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      dialog.dataset.closing = "true";
       // A scrolled-away cover fades out instead of jumping the panel to its top.
-      const visible = stage.getBoundingClientRect().top >= panel.getBoundingClientRect().top - 1 && stage.dataset.mediaIndex === "0";
+      const visible = source?.trigger.isConnected && source.snapshot && stage.getBoundingClientRect().top >= panel.getBoundingClientRect().top - 1 && stage.dataset.mediaIndex === "0";
       if (visible) {
         let flight = flightRef.current;
         if (!flight) {
@@ -136,10 +164,15 @@ export function ShowcaseModal({ children, titleId }: { children: ReactNode; titl
           flightRef.current = flight;
         }
         panel.dataset.phase = "closing";
-        dialog.dataset.closing = "true";
-        await moveMediaFlight(flight, galleryDestination(source), CLOSE_DURATION);
+        await Promise.all([fadePanel(panel), moveMediaFlight(flight, galleryDestination(source), CLOSE_DURATION)]);
       } else {
-        await panel.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 210, fill: "forwards" }).finished.catch(() => {});
+        if (flightRef.current) {
+          cancelMediaFlight(flightRef.current);
+          flightRef.current.frame.remove();
+          flightRef.current = null;
+        }
+        panel.dataset.phase = "open";
+        await fadePanel(panel);
       }
     }
     router.back();
