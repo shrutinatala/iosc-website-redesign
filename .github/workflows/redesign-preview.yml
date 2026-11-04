@@ -1,0 +1,30 @@
+name: Update redesign preview
+
+on:
+  push:
+    branches:
+      - feature/redesign-concept
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Push to the public preview repository
+        env:
+          DEPLOY_KEY: ${{ secrets.REDESIGN_DEPLOY_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "$DEPLOY_KEY" > ~/.ssh/iosc_redesign
+          chmod 600 ~/.ssh/iosc_redesign
+          ssh-keyscan -t ed25519 github.com >> ~/.ssh/known_hosts
+          git remote add preview git@github.com:shrutinatala/iosc-website-redesign.git
+          GIT_SSH_COMMAND="ssh -i ~/.ssh/iosc_redesign -o IdentitiesOnly=yes" git push preview HEAD:refs/heads/main
